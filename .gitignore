@@ -26,6 +26,7 @@ hs_err_pid*
 /minecraft_data
 
 # Editor configs
+.history
 .settings
 .vscode
 

@@ -1,17 +1,22 @@
 ## Fork of leomelki/LoupGarou by TheOptimisticFactory
 
 - This repository is based off https://github.com/leomelki/LoupGarou and contains improvements made by the community before it lands in the main repository (if ever).
+  + Should you need it, you can consult its original readme at https://github.com/TheOptimisticFactory/LoupGarou/blob/dev/README.legacy.md (snapshot taken on `2024-12-05`). Bear in mind the discrepancies that can exist with this repository.
+
 - The `dev` branch is **STABLE**, despite his name. The `wip` branch, on the other hand might not
 
+## How to run the project ##
 
-## Server files (plug and play)
+- The simplest way to run this project is to a pre-configured server files containing the compiled jar of my fork can be found at: https://github.com/TheOptimisticFactory/java-minecraft-loupGarou-server
+  + Follow [these instructions](https://github.com/TheOptimisticFactory/java-minecraft-loupGarou-server?tab=readme-ov-file#how-to-run-the-project) to get it running in no time.
 
-- The server files containing the compiled jar of my fork can be found at: https://github.com/TheOptimisticFactory/java-minecraft-loupGarou-server
+## Plugin jar ##
+
 - The jar itself is downloadable from https://github.com/TheOptimisticFactory/java-minecraft-loupGarou-server/tree/master/plugins (dont forget the [config file](https://github.com/TheOptimisticFactory/java-minecraft-loupGarou-server/blob/master/plugins/LoupGarou/config.yml))
 
 ## Additional features compared to original plugin ##
 
-As of today (2020/05/11), the original repository version is [v1.1.0](https://github.com/leomelki/LoupGarou/releases/tag/1.1.0), released on 2020/04/07.
+As of today (`2020/05/11`), the original repository version is [v1.1.0](https://github.com/leomelki/LoupGarou/releases/tag/1.1.0), released on `2020/04/07`.
 
 My repository includes the **same content** along with the following **additions** (each link contains screenshots):
 
@@ -35,12 +40,12 @@ My repository includes the **same content** along with the following **additions
 - `/lg roles list` to get the complete list of available roles
 - `/lg roles set <role> <amount>` to set the number of players for a given role
 
-##### Additonal commands compared to baseline repository:
+##### Additional commands compared to baseline repository:
 
 - `/lg nick <username> <nickname>` to set a nickname to a player
 - `/lg unnick <username>` to remove a nickname from a player
 - `/lg random` to list the probability to picking each role with a weight > 0
-- `/lg random showAll` to list the probability to picking each role (disregarding their weigth)
+- `/lg random showAll` to list the probability to picking each role (disregarding their weight)
 - `/lg random players <amount>` to set the number of players when using random role distribution
 
 ## Additional features gallery
