@@ -338,7 +338,7 @@ public class LGGame implements Listener {
 			List<Double> location = (List<Double>) list.remove(random.nextInt(list.size()));
 			Player p = lgp.getPlayer();
 			p.setWalkSpeed(0);
-			p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 99999, 180, false, false));
+			p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 99999, 180, false, false));
 			lgp.setPlace(original.indexOf(location));
 			placements.put(lgp.getPlace(), lgp);
 			p.teleport(new Location(p.getWorld(), location.get(0) + 0.5, location.get(1), location.get(2) + 0.5,
@@ -696,7 +696,7 @@ public class LGGame implements Listener {
 
 			Player p = lgp.getPlayer();
 			lgp.showView();
-			p.removePotionEffect(PotionEffectType.JUMP);
+			p.removePotionEffect(PotionEffectType.JUMP_BOOST);
 			p.setWalkSpeed(0.2f);
 		}
 
