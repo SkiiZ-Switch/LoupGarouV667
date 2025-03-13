@@ -8,13 +8,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringJoiner;
-import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import fr.leomelki.loupgarou.events.LGCustomItemChangeEvent;
 import fr.leomelki.loupgarou.roles.Role;
@@ -28,9 +27,9 @@ public class LGCustomItems {
 	private static Object readCustomItemsJSON() throws Exception {
 		final InputStream stream = LGCustomItems.class.getClassLoader().getResourceAsStream(LGCustomItems.JSON_FILE);
 		final Reader reader = new InputStreamReader(stream);
-		JSONParser jsonParser = new JSONParser();
-
-		return jsonParser.parse(reader);
+		JSONTokener tokener = new JSONTokener(reader);
+		JSONObject obj = new JSONObject(tokener);
+		return obj;
 	}
 
 	private static void addItem(final String roleName, HashMap<String, Material> currentMapping) {
@@ -46,29 +45,21 @@ public class LGCustomItems {
 	}
 
 	static {
-		JSONObject parsedJson = null;
+		JSONObject Roles = null;
 
 		try {
-			parsedJson = (JSONObject) readCustomItemsJSON();
+			Roles = (JSONObject) readCustomItemsJSON();
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to parse JSON file" + LGCustomItems.JSON_FILE, e);
 		}
 
-		for (Object rawEntry : parsedJson.entrySet()) {
+		for (String roleName : Roles.keySet()) {
 			final HashMap<String, Material> items = new HashMap<>();
-
-			@SuppressWarnings("unchecked")
-			final Entry<String, HashMap<String, Material>> entry = (Entry<String, HashMap<String, Material>>) rawEntry;
-			final JSONObject currentProperties = (JSONObject) entry.getValue();
-			final String roleName = entry.getKey();
-
-			for (Object rawProperty : currentProperties.entrySet()) {
-				@SuppressWarnings("unchecked")
-				final Entry<String, String> property = (Entry<String, String>) rawProperty;
-				final String currentName = property.getKey();
-				final String currentMaterial = property.getValue();
-
-				items.put(currentName, Material.valueOf(currentMaterial));
+			final JSONObject roleNameItems = Roles.getJSONObject(roleName);
+			
+			for (String roleStatusKey : roleNameItems.keySet()) {
+				final String currentMaterial = roleNameItems.getString(roleStatusKey);
+				items.put(roleStatusKey, Material.valueOf(currentMaterial));
 			}
 
 			LGCustomItems.addItem(roleName, items);
