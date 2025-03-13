@@ -21,9 +21,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -176,12 +176,13 @@ public class MainLg extends JavaPlugin {
 								if (evt2.getPrefix().length() > 0) {
 									try {
 										if (displayName != null) {
-											JSONObject obj = (JSONObject) new JSONParser().parse(displayName.getJson());
+											JSONTokener tokener = new JSONTokener(displayName.getJson());
+											JSONObject obj = new JSONObject(tokener);
 											displayName = WrappedChatComponent.fromText(evt2.getPrefix() + obj.get("text"));
 										} else {
 											displayName = WrappedChatComponent.fromText(evt2.getPrefix() + data.getProfile().getName());
 										}
-									} catch (ParseException e) {
+									} catch (JSONException e) {
 										e.printStackTrace();
 									}
 								}
