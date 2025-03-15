@@ -23,6 +23,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.scoreboard.Criteria;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 
 import com.comphenix.protocol.wrappers.EnumWrappers.NativeGameMode;
 import com.comphenix.protocol.wrappers.EnumWrappers.PlayerInfoAction;
@@ -30,14 +34,6 @@ import com.comphenix.protocol.wrappers.PlayerInfoData;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedGameProfile;
 
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerChat;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerEntityDestroy;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerExperience;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerPlayerInfo;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerScoreboardObjective;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerScoreboardTeam;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerUpdateHealth;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerUpdateTime;
 import fr.leomelki.loupgarou.MainLg;
 import fr.leomelki.loupgarou.classes.LGCustomItems.LGCustomItemsConstraints;
 import fr.leomelki.loupgarou.classes.chat.LGChat;
@@ -117,11 +113,9 @@ public class LGGame implements Listener {
 	}
 
 	public void sendActionBarMessage(String msg) {
-		WrapperPlayServerChat chat = new WrapperPlayServerChat();
-		// chat.setPosition((byte) 2);
-		chat.setMessage(WrappedChatComponent.fromText(msg));
-		for (LGPlayer lgp : inGame)
-			chat.sendPacket(lgp.getPlayer());
+		for (LGPlayer lgp : inGame){
+			lgp.getPlayer().sendMessage(msg);
+		}
 	}
 
 	public void broadcastMessage(String msg) {
@@ -146,11 +140,9 @@ public class LGGame implements Listener {
 		waitTask = new BukkitRunnable() {
 			@Override
 			public void run() {
-				WrapperPlayServerExperience exp = new WrapperPlayServerExperience();
-				exp.setLevel((short) (Math.floorDiv(waitTicks, 20) + 1));
-				exp.setExperienceBar((float) waitTicks / (seconds * 20F));
 				for (LGPlayer player : getInGame()) {
-					exp.sendPacket(player.getPlayer());
+					player.getPlayer().setLevel((short) (Math.floorDiv(waitTicks, 20) + 1));
+					player.getPlayer().setExp((float) waitTicks / (seconds * 20F));
 					if (generator != null)
 						player.sendActionBarMessage(generator.generate(player, Math.floorDiv(waitTicks, 20) + 1));
 				}
@@ -172,11 +164,9 @@ public class LGGame implements Listener {
 		waitTask = new BukkitRunnable() {
 			@Override
 			public void run() {
-				WrapperPlayServerExperience exp = new WrapperPlayServerExperience();
-				exp.setLevel((short) (Math.floorDiv(waitTicks, 20) + 1));
-				exp.setExperienceBar((float) waitTicks / (initialSeconds * 20F));
 				for (LGPlayer player : getInGame()) {
-					exp.sendPacket(player.getPlayer());
+					player.getPlayer().setLevel((short) (Math.floorDiv(waitTicks, 20) + 1));
+					player.getPlayer().setExp((float) waitTicks / (initialSeconds * 20F));
 					if (generator != null)
 						player.sendActionBarMessage(generator.generate(player, Math.floorDiv(waitTicks, 20) + 1));
 				}
@@ -223,24 +213,24 @@ public class LGGame implements Listener {
 
 			Player player = lgp.getPlayer();
 
+			//TODO remake entity vote
 			// Clear votes
+			// WrapperPlayServerEntityDestroy destroy = new WrapperPlayServerEntityDestroy();
+			// destroy.setEntityIds(new int[] { Integer.MIN_VALUE + player.getEntityId() });
+			// int[] ids = new int[getInGame().size() + 1];
+			// for (int i = 0; i < getInGame().size(); i++) {
+			// 	Player l = getInGame().get(i).getPlayer();
+			// 	if (l == null)
+			// 		continue;
+			// 	ids[i] = Integer.MIN_VALUE + l.getEntityId();
+			// 	destroy.sendPacket(l);
+			// }
 
-			WrapperPlayServerEntityDestroy destroy = new WrapperPlayServerEntityDestroy();
-			destroy.setEntityIds(new int[] { Integer.MIN_VALUE + player.getEntityId() });
-			int[] ids = new int[getInGame().size() + 1];
-			for (int i = 0; i < getInGame().size(); i++) {
-				Player l = getInGame().get(i).getPlayer();
-				if (l == null)
-					continue;
-				ids[i] = Integer.MIN_VALUE + l.getEntityId();
-				destroy.sendPacket(l);
-			}
+			// ids[ids.length - 1] = -player.getEntityId();// Clear voting
 
-			ids[ids.length - 1] = -player.getEntityId();// Clear voting
-
-			destroy = new WrapperPlayServerEntityDestroy();
-			destroy.setEntityIds(ids);
-			destroy.sendPacket(player);
+			// destroy = new WrapperPlayServerEntityDestroy();
+			// destroy.setEntityIds(ids);
+			// destroy.sendPacket(player);
 
 			// End clear votes/voting
 
@@ -277,10 +267,9 @@ public class LGGame implements Listener {
 							+ maxPlayers + "§9)");
 
 			// Reset scoreboard
-			WrapperPlayServerScoreboardObjective obj = new WrapperPlayServerScoreboardObjective();
-			obj.setName("lg_scoreboard");
-			obj.setMode(1);
-			obj.sendPacket(player);
+			Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+			Objective obj = board.registerNewObjective("lg_scoreboard", Criteria.DUMMY, "lg_scoreboard");
+			obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
 			Bukkit.getPluginManager().callEvent(new LGGameJoinEvent(this, lgp));
 			// AutoStart
@@ -361,11 +350,9 @@ public class LGGame implements Listener {
 			placements.put(lgp.getPlace(), lgp);
 			p.teleport(new Location(p.getWorld(), location.get(0) + 0.5, location.get(1), location.get(2) + 0.5,
 					location.get(3).floatValue(), location.get(4).floatValue()));
-			WrapperPlayServerUpdateHealth update = new WrapperPlayServerUpdateHealth();
-			update.setFood(6);
-			update.setFoodSaturation(1);
-			update.setHealth(20);
-			update.sendPacket(p);
+			p.setFoodLevel(6);
+			p.setSaturation(1);
+			p.setHealth(20);
 		}
 
 		try {
@@ -512,11 +499,13 @@ public class LGGame implements Listener {
 						cancel();
 
 					LGGame.this.time = (long) (18000 - (timeoutLeft - 20D) / (20 * 2D) * 12000D);
-					WrapperPlayServerUpdateTime serverUpdateTime = new WrapperPlayServerUpdateTime();
-					serverUpdateTime.setAgeOfTheWorld(0);
-					serverUpdateTime.setTimeOfDay(LGGame.this.time);
-					for (LGPlayer lgp : getInGame())
-						serverUpdateTime.sendPacket(lgp.getPlayer());
+					//TODO Check if doing the same thing
+					// serverUpdateTime.setAgeOfTheWorld(0);
+					// serverUpdateTime.setTimeOfDay(LGGame.this.time);
+					for (LGPlayer lgp : getInGame()){
+						lgp.getPlayer().getWorld().setFullTime(0);;
+						lgp.getPlayer().getWorld().setTime(LGGame.this.time);
+					}
 				}
 			}
 		}.runTaskTimer(MainLg.getInstance(), 1, 1);
@@ -582,14 +571,16 @@ public class LGGame implements Listener {
 
 			for (LGPlayer lgp : getInGame())
 				if (lgp == killed) {
-					WrapperPlayServerPlayerInfo info = new WrapperPlayServerPlayerInfo();
-					ArrayList<PlayerInfoData> infos = new ArrayList<>();
-					info.setAction(PlayerInfoAction.REMOVE_PLAYER);
-					infos.add(new PlayerInfoData(
-							new WrappedGameProfile(lgp.getPlayer().getUniqueId(), lgp.getName(true)), 0,
-							NativeGameMode.ADVENTURE, WrappedChatComponent.fromText(lgp.getName(true))));
-					info.setData(infos);
-					info.sendPacket(lgp.getPlayer());
+					//TODO Check ce que ça donne parce que ça fait 100% pas la même chose mdr
+					lgp.getPlayer().setGameMode(GameMode.SPECTATOR);
+					// WrapperPlayServerPlayerInfo info = new WrapperPlayServerPlayerInfo();
+					// ArrayList<PlayerInfoData> infos = new ArrayList<>();
+					// info.setAction(PlayerInfoAction.REMOVE_PLAYER);
+					// infos.add(new PlayerInfoData(
+					// 		new WrappedGameProfile(lgp.getPlayer().getUniqueId(), lgp.getName(true)), 0,
+					// 		NativeGameMode.ADVENTURE, WrappedChatComponent.fromText(lgp.getName(true))));
+					// info.setData(infos);
+					// info.sendPacket(lgp.getPlayer());
 				} else {
 					lgp.getPlayer().hidePlayer(MainLg.getInstance(), killed.getPlayer());
 				}
@@ -728,10 +719,11 @@ public class LGGame implements Listener {
 		for (LGPlayer lgp : getInGame())
 			if (lgp.getPlayer().isOnline()) {
 				LGPlayer.removePlayer(lgp.getPlayer());
-				WrapperPlayServerScoreboardTeam team = new WrapperPlayServerScoreboardTeam();
-				team.setMode(1);
-				team.setName("you_are");
-				team.sendPacket(lgp.getPlayer());
+				//? TODO Check c'est quoi l'intêret ce truc
+				// WrapperPlayServerScoreboardTeam team = new WrapperPlayServerScoreboardTeam();
+				// team.setMode(1);
+				// team.setName("you_are");
+				// team.sendPacket(lgp.getPlayer());
 				LGPlayer.thePlayer(lgp.getPlayer()).join(MainLg.getInstance().getCurrentGame());
 				if (lgp.getPlayer().hasPermission("loupgarou.admin")) {
 					lgp.getPlayer().getInventory().setItem(1,
@@ -800,11 +792,15 @@ public class LGGame implements Listener {
 						cancel();
 
 					LGGame.this.time = (long) (18000 - (timeoutLeft - 20D) / (20 * 2D) * 12000D);
-					WrapperPlayServerUpdateTime serverUpdateTime = new WrapperPlayServerUpdateTime();
-					serverUpdateTime.setAgeOfTheWorld(0);
-					serverUpdateTime.setTimeOfDay(LGGame.this.time);
-					for (LGPlayer lgp : getInGame())
-						serverUpdateTime.sendPacket(lgp.getPlayer());
+					//TODO Check if doing the same thing
+					// WrapperPlayServerUpdateTime serverUpdateTime = new WrapperPlayServerUpdateTime();
+					// serverUpdateTime.setAgeOfTheWorld(0);
+					// serverUpdateTime.setTimeOfDay(LGGame.this.time);
+					for (LGPlayer lgp : getInGame()){
+						lgp.getPlayer().getWorld().setFullTime(0);
+						lgp.getPlayer().getWorld().setTime(LGGame.this.time);
+
+					}
 				}
 			}
 		}.runTaskTimer(MainLg.getInstance(), 1, 1);

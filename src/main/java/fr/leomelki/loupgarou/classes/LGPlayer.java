@@ -19,10 +19,6 @@ import com.comphenix.protocol.wrappers.PlayerInfoData;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedGameProfile;
 
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerChat;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerPlayerInfo;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerScoreboardTeam;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerTitle;
 import fr.leomelki.loupgarou.MainLg;
 import fr.leomelki.loupgarou.classes.chat.LGChat;
 import fr.leomelki.loupgarou.classes.chat.LGChat.LGChatCallback;
@@ -73,10 +69,7 @@ public class LGPlayer {
 
 	public void sendActionBarMessage(String msg) {
 		if (this.player != null) {
-			WrapperPlayServerChat serverChat = new WrapperPlayServerChat();
-			// serverChat.setPosition((byte) 2);
-			serverChat.setMessage(WrappedChatComponent.fromText(msg));
-			serverChat.sendPacket(getPlayer());
+			getPlayer().sendMessage(msg);
 		}
 	}
 
@@ -87,22 +80,7 @@ public class LGPlayer {
 
 	public void sendTitle(String title, String subTitle, int stay) {
 		if (this.player != null) {
-			WrapperPlayServerTitle titlePacket = new WrapperPlayServerTitle();
-			titlePacket.setAction(TitleAction.TIMES);
-			titlePacket.setFadeIn(10);
-			titlePacket.setStay(stay);
-			titlePacket.setFadeOut(10);
-			titlePacket.sendPacket(player);
-
-			titlePacket = new WrapperPlayServerTitle();
-			titlePacket.setAction(TitleAction.TITLE);
-			titlePacket.setTitle(WrappedChatComponent.fromText(title));
-			titlePacket.sendPacket(player);
-
-			titlePacket = new WrapperPlayServerTitle();
-			titlePacket.setAction(TitleAction.SUBTITLE);
-			titlePacket.setTitle(WrappedChatComponent.fromText(subTitle));
-			titlePacket.sendPacket(player);
+			player.sendTitle(title, subTitle, 10, stay, 10);
 		}
 	}
 
@@ -169,20 +147,23 @@ public class LGPlayer {
 					if (lgp != this && lgp.getPlayer() != null)
 						getPlayer().showPlayer(MainLg.getInstance(),lgp.getPlayer());
 					else {
-						WrapperPlayServerScoreboardTeam team = new WrapperPlayServerScoreboardTeam();
-						team.setMode(2);
-						team.setName(lgp.getName(true));
-						team.setPrefix(WrappedChatComponent.fromText(""));
-						team.setPlayers(Arrays.asList(lgp.getName(true)));
-						team.sendPacket(getPlayer());
+						//TODO make scoreboard
+						// WrapperPlayServerScoreboardTeam team = new WrapperPlayServerScoreboardTeam();
+						// team.setMode(2);
+						// team.setName(lgp.getName(true));
+						// team.setPrefix(WrappedChatComponent.fromText(""));
+						// team.setPlayers(Arrays.asList(lgp.getName(true)));
+						// team.sendPacket(getPlayer());
 
-						WrapperPlayServerPlayerInfo info = new WrapperPlayServerPlayerInfo();
-						ArrayList<PlayerInfoData> infos = new ArrayList<>();
-						info.setAction(PlayerInfoAction.ADD_PLAYER);
-						infos.add(new PlayerInfoData(new WrappedGameProfile(getPlayer().getUniqueId(), getName(true)), 0,
-								NativeGameMode.ADVENTURE, WrappedChatComponent.fromText(getName(true))));
-						info.setData(infos);
-						info.sendPacket(getPlayer());
+						// WrapperPlayServerPlayerInfo info = new WrapperPlayServerPlayerInfo();
+						// ArrayList<PlayerInfoData> infos = new ArrayList<>();
+						// info.setAction(PlayerInfoAction.ADD_PLAYER);
+						// infos.add(new PlayerInfoData(new WrappedGameProfile(getPlayer().getUniqueId(), getName(true)), 0,
+						// 		NativeGameMode.ADVENTURE, WrappedChatComponent.fromText(getName(true))));
+						// info.setData(infos);
+						// info.sendPacket(getPlayer());
+						//TODO Voir ce que ça fait exactement
+						getPlayer().setGameMode(GameMode.ADVENTURE);
 					}
 				}
 
@@ -190,43 +171,42 @@ public class LGPlayer {
 		getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 2, false, false));
 	}
 
-	// TODO Update prefix for only one guy
+	// TODO Before Switch fork Update prefix for only one guy
 	public void updatePrefix() {
 		if (getGame() != null && !isDead() && player != null) {
 			List<String> meList = Arrays.asList(getName(true));
 			for (LGPlayer lgp : getGame().getInGame()) {
-				WrapperPlayServerPlayerInfo info = new WrapperPlayServerPlayerInfo();
-				ArrayList<PlayerInfoData> infos = new ArrayList<>();
-				info.setAction(PlayerInfoAction.ADD_PLAYER);
-				infos.add(new PlayerInfoData(new WrappedGameProfile(getPlayer().getUniqueId(), getName(true)), 0,
-						NativeGameMode.ADVENTURE, WrappedChatComponent.fromText(getName(true))));
-				info.setData(infos);
-				info.sendPacket(lgp.getPlayer());
+				lgp.getPlayer().setGameMode(GameMode.ADVENTURE);
+				//TODO check ce que ça fait
+				// WrapperPlayServerPlayerInfo info = new WrapperPlayServerPlayerInfo();
+				// ArrayList<PlayerInfoData> infos = new ArrayList<>();
+				// info.setAction(PlayerInfoAction.ADD_PLAYER);
+				// infos.add(new PlayerInfoData(new WrappedGameProfile(getPlayer().getUniqueId(), getName(true)), 0,
+				// 		NativeGameMode.ADVENTURE, WrappedChatComponent.fromText(getName(true))));
+				// info.setData(infos);
+				// info.sendPacket(lgp.getPlayer());
 
-				WrapperPlayServerScoreboardTeam team = new WrapperPlayServerScoreboardTeam();
-				team.setMode(2);
-				team.setName(getName(true));
-				team.setPrefix(WrappedChatComponent.fromText("DANG YO"));
-				team.setPlayers(meList);
-				team.sendPacket(lgp.getPlayer());
+				//TODO refaire ça aussi
+				// WrapperPlayServerScoreboardTeam team = new WrapperPlayServerScoreboardTeam();
+				// team.setMode(2);
+				// team.setName(getName(true));
+				// team.setPrefix(WrappedChatComponent.fromText("DANG YO"));
+				// team.setPlayers(meList);
+				// team.sendPacket(lgp.getPlayer());
 			}
 		}
 	}
 
 	public void hideView() {
 		if (getGame() != null && player != null) {
-			WrapperPlayServerPlayerInfo info = new WrapperPlayServerPlayerInfo();
-			ArrayList<PlayerInfoData> infos = new ArrayList<>();
-			info.setAction(PlayerInfoAction.ADD_PLAYER);
-			for (LGPlayer lgp : getGame().getAlive())
+			for (LGPlayer lgp : getGame().getAlive()) {
 				if (lgp != this && lgp.getPlayer() != null) {
-					if (!lgp.isDead())
-						infos.add(new PlayerInfoData(new WrappedGameProfile(lgp.getPlayer().getUniqueId(), lgp.getName(true)), 0,
-								NativeGameMode.ADVENTURE, WrappedChatComponent.fromText(lgp.getName(true))));
+					if (!lgp.isDead()){
+						lgp.getPlayer().setGameMode(GameMode.ADVENTURE);
+					}
 					getPlayer().hidePlayer(MainLg.getInstance(),lgp.getPlayer());
 				}
-			info.setData(infos);
-			info.sendPacket(getPlayer());
+			}
 		}
 
 		getPlayer().removePotionEffect(PotionEffectType.BLINDNESS);
@@ -237,13 +217,14 @@ public class LGPlayer {
 		if (getGame() != null && player != null) {
 			for (LGPlayer lgp : getGame().getInGame()) {
 				if (lgp == this) {
-					WrapperPlayServerPlayerInfo info = new WrapperPlayServerPlayerInfo();
-					ArrayList<PlayerInfoData> infos = new ArrayList<>();
-					info.setAction(PlayerInfoAction.ADD_PLAYER);
-					infos.add(new PlayerInfoData(new WrappedGameProfile(getPlayer().getUniqueId(), getName(true)), 0,
-							NativeGameMode.ADVENTURE, WrappedChatComponent.fromText(getName(true))));
-					info.setData(infos);
-					info.sendPacket(getPlayer());
+					lgp.getPlayer().setGameMode(GameMode.ADVENTURE);
+					// WrapperPlayServerPlayerInfo info = new WrapperPlayServerPlayerInfo();
+					// ArrayList<PlayerInfoData> infos = new ArrayList<>();
+					// info.setAction(PlayerInfoAction.ADD_PLAYER);
+					// infos.add(new PlayerInfoData(new WrappedGameProfile(getPlayer().getUniqueId(), getName(true)), 0,
+					// 		NativeGameMode.ADVENTURE, WrappedChatComponent.fromText(getName(true))));
+					// info.setData(infos);
+					// info.sendPacket(getPlayer());
 				} else if (!isDead() && lgp.getPlayer() != null) {
 					lgp.getPlayer().hidePlayer(MainLg.getInstance(),getPlayer());
 					lgp.getPlayer().showPlayer(MainLg.getInstance(),getPlayer());
@@ -255,12 +236,12 @@ public class LGPlayer {
 	public void updateOwnSkin() {
 		if (player != null) {
 			// On change son skin avec un packet de PlayerInfo (dans le tab)
-			WrapperPlayServerPlayerInfo infos = new WrapperPlayServerPlayerInfo();
-			infos.setAction(PlayerInfoAction.ADD_PLAYER);
-			WrappedGameProfile gameProfile = new WrappedGameProfile(getPlayer().getUniqueId(), getPlayer().getName());
-			infos.setData(Arrays.asList(new PlayerInfoData(gameProfile, 10, NativeGameMode.SURVIVAL,
-					WrappedChatComponent.fromText(getPlayer().getName()))));
-			infos.sendPacket(getPlayer());
+			// WrapperPlayServerPlayerInfo infos = new WrapperPlayServerPlayerInfo();
+			// infos.setAction(PlayerInfoAction.ADD_PLAYER);
+			// WrappedGameProfile gameProfile = new WrappedGameProfile(getPlayer().getUniqueId(), getPlayer().getName());
+			// infos.setData(Arrays.asList(new PlayerInfoData(gameProfile, 10, NativeGameMode.SURVIVAL,
+			// 		WrappedChatComponent.fromText(getPlayer().getName()))));
+			// infos.sendPacket(getPlayer());
 			// Pour qu'il voit son skin changer (sa main et en f5), on lui dit qu'il respawn
 			// (alors qu'il n'est pas mort mais ça marche quand même mdr)
 			//TODO Trouver une meilleure façon de changer le skin d'un joueur

@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 
 import fr.leomelki.loupgarou.MainLg;
 import fr.leomelki.loupgarou.roles.Role;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerUpdateHealth;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -57,12 +56,9 @@ public class LGRoleDistributor {
 
   private void setRoleToPlayer(LGPlayer selected, Role givenRole) {
     givenRole.joinAndDisplayRole(selected);
-
-    WrapperPlayServerUpdateHealth update = new WrapperPlayServerUpdateHealth();
-    update.setFood(6);
-    update.setFoodSaturation(1);
-    update.setHealth(20);
-    update.sendPacket(selected.getPlayer());
+    selected.getPlayer().setFoodLevel(6);
+    selected.getPlayer().setSaturation(1);
+    selected.getPlayer().setHealth(20);
   }
 
   public List<Role> assignRoles() {

@@ -326,7 +326,7 @@ public class LGVote {
 
 		if (votes.containsKey(voted) && !kill) {
 			Location loc = voted.getPlayer().getLocation();
-
+			
 			WrapperPlayServerSpawnEntityLiving spawn = new WrapperPlayServerSpawnEntityLiving();
 			spawn.setEntityID(entityId);
 			spawn.setType(EntityType.UNKNOWN);

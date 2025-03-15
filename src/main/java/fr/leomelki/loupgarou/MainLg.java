@@ -35,12 +35,6 @@ import com.comphenix.protocol.wrappers.EnumWrappers.ItemSlot;
 import com.comphenix.protocol.wrappers.PlayerInfoData;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerEntityEquipment;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerNamedSoundEffect;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerPlayerInfo;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerScoreboardTeam;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerUpdateHealth;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerUpdateTime;
 import fr.leomelki.loupgarou.classes.LGGame;
 import fr.leomelki.loupgarou.classes.LGPlayer;
 import fr.leomelki.loupgarou.classes.LGStats;
@@ -143,9 +137,8 @@ public class MainLg extends JavaPlugin {
 				.addPacketListener(new PacketAdapter(this, ListenerPriority.NORMAL, PacketType.Play.Server.UPDATE_TIME) {
 					@Override
 					public void onPacketSending(PacketEvent event) {
-						WrapperPlayServerUpdateTime time = new WrapperPlayServerUpdateTime(event.getPacket());
 						LGPlayer lgp = LGPlayer.thePlayer(event.getPlayer());
-						if (lgp.getGame() != null && lgp.getGame().getTime() != time.getTimeOfDay())
+						if (lgp.getGame() != null)
 							event.setCancelled(true);
 					}
 				});
@@ -155,9 +148,10 @@ public class MainLg extends JavaPlugin {
 				.addPacketListener(new PacketAdapter(this, ListenerPriority.NORMAL, PacketType.Play.Server.NAMED_SOUND_EFFECT) {
 					@Override
 					public void onPacketSending(PacketEvent event) {
-						WrapperPlayServerNamedSoundEffect sound = new WrapperPlayServerNamedSoundEffect(event.getPacket());
-						if (sound.getSoundEffect() == Sound.ENTITY_PLAYER_ATTACK_NODAMAGE)
-							event.setCancelled(true);
+						event.setCancelled(true);
+						// WrapperPlayServerNamedSoundEffect sound = new WrapperPlayServerNamedSoundEffect(event.getPacket());
+						// if (sound.getSoundEffect() == Sound.ENTITY_PLAYER_ATTACK_NODAMAGE)
+						// 	event.setCancelled(true);
 					}
 				});
 		protocolManager
@@ -203,8 +197,7 @@ public class MainLg extends JavaPlugin {
 					public void onPacketSending(PacketEvent event) {
 						LGPlayer player = LGPlayer.thePlayer(event.getPlayer());
 						if (player.getGame() != null && player.getGame().isStarted()) {
-							WrapperPlayServerUpdateHealth health = new WrapperPlayServerUpdateHealth(event.getPacket());
-							health.setFood(6);
+							player.getPlayer().setFoodLevel(6);
 						}
 					}
 				});
