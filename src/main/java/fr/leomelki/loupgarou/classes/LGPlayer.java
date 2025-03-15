@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -37,10 +36,6 @@ import fr.leomelki.loupgarou.utils.VariableCache;
 import fr.leomelki.loupgarou.utils.VariousUtils;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.server.v1_15_R1.DimensionManager;
-import net.minecraft.server.v1_15_R1.EnumGamemode;
-import net.minecraft.server.v1_15_R1.PacketPlayOutRespawn;
-import net.minecraft.server.v1_15_R1.WorldType;
 
 public class LGPlayer {
 	private static HashMap<Player, LGPlayer> cachedPlayers = new HashMap<>();
@@ -79,7 +74,7 @@ public class LGPlayer {
 	public void sendActionBarMessage(String msg) {
 		if (this.player != null) {
 			WrapperPlayServerChat serverChat = new WrapperPlayServerChat();
-			serverChat.setPosition((byte) 2);
+			// serverChat.setPosition((byte) 2);
 			serverChat.setMessage(WrappedChatComponent.fromText(msg));
 			serverChat.sendPacket(getPlayer());
 		}
@@ -172,7 +167,7 @@ public class LGPlayer {
 			for (LGPlayer lgp : getGame().getAlive())
 				if (!lgp.isDead()) {
 					if (lgp != this && lgp.getPlayer() != null)
-						getPlayer().showPlayer(lgp.getPlayer());
+						getPlayer().showPlayer(MainLg.getInstance(),lgp.getPlayer());
 					else {
 						WrapperPlayServerScoreboardTeam team = new WrapperPlayServerScoreboardTeam();
 						team.setMode(2);
@@ -228,7 +223,7 @@ public class LGPlayer {
 					if (!lgp.isDead())
 						infos.add(new PlayerInfoData(new WrappedGameProfile(lgp.getPlayer().getUniqueId(), lgp.getName(true)), 0,
 								NativeGameMode.ADVENTURE, WrappedChatComponent.fromText(lgp.getName(true))));
-					getPlayer().hidePlayer(lgp.getPlayer());
+					getPlayer().hidePlayer(MainLg.getInstance(),lgp.getPlayer());
 				}
 			info.setData(infos);
 			info.sendPacket(getPlayer());
@@ -250,8 +245,8 @@ public class LGPlayer {
 					info.setData(infos);
 					info.sendPacket(getPlayer());
 				} else if (!isDead() && lgp.getPlayer() != null) {
-					lgp.getPlayer().hidePlayer(getPlayer());
-					lgp.getPlayer().showPlayer(getPlayer());
+					lgp.getPlayer().hidePlayer(MainLg.getInstance(),getPlayer());
+					lgp.getPlayer().showPlayer(MainLg.getInstance(),getPlayer());
 				}
 			}
 		}
@@ -268,9 +263,10 @@ public class LGPlayer {
 			infos.sendPacket(getPlayer());
 			// Pour qu'il voit son skin changer (sa main et en f5), on lui dit qu'il respawn
 			// (alors qu'il n'est pas mort mais ça marche quand même mdr)
-			PacketPlayOutRespawn respawn = new PacketPlayOutRespawn(DimensionManager.OVERWORLD, 0, WorldType.NORMAL,
-					EnumGamemode.ADVENTURE);
-			((CraftPlayer) getPlayer()).getHandle().playerConnection.sendPacket(respawn);
+			//TODO Trouver une meilleure façon de changer le skin d'un joueur
+			// PacketPlayOutRespawn respawn = new PacketPlayOutRespawn(DimensionManager.OVERWORLD, 0, WorldType.NORMAL,
+			// 		EnumGamemode.ADVENTURE);
+			// ((CraftPlayer) getPlayer()).getHandle().playerConnection.sendPacket(respawn);
 			// Enfin, on le téléporte à sa potion actuelle car sinon il se verra dans le
 			// vide
 			getPlayer().teleport(getPlayer().getLocation());
@@ -364,7 +360,7 @@ public class LGPlayer {
 		if (player != null)
 			for (LGPlayer lgp : getGame().getInGame())
 				if (lgp != this && lgp.getPlayer() != null)
-					lgp.getPlayer().hidePlayer(getPlayer());
+					lgp.getPlayer().hidePlayer(MainLg.getInstance(),getPlayer());
 		muted = true;
 	}
 

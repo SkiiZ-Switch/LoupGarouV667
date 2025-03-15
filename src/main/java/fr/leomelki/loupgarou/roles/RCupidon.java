@@ -160,7 +160,7 @@ public class RCupidon extends Role {
 		int entityId = Integer.MAX_VALUE - ofWho.getPlayer().getEntityId();
 		WrapperPlayServerSpawnEntityLiving spawn = new WrapperPlayServerSpawnEntityLiving();
 		spawn.setEntityID(entityId);
-		spawn.setType(EntityType.DROPPED_ITEM);
+		spawn.setType(EntityType.UNKNOWN);
 		Location loc = ofWho.getPlayer().getLocation();
 		spawn.setX(loc.getX());
 		spawn.setY(loc.getY() + 1.9);

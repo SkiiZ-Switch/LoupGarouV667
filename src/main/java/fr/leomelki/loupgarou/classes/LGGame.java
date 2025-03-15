@@ -74,23 +74,39 @@ import lombok.Setter;
 public class LGGame implements Listener {
 	private static boolean autoStart = false;
 
-	@Getter private final SecureRandom random = new SecureRandom();
-	@Getter private final int maxPlayers;
-	@Getter private List<LGPlayer> inGame = new ArrayList<>();
-	@Getter private List<Role> roles;
+	@Getter
+	private final SecureRandom random = new SecureRandom();
+	@Getter
+	private final int maxPlayers;
+	@Getter
+	private List<LGPlayer> inGame = new ArrayList<>();
+	@Getter
+	private List<Role> roles;
 
-	@Getter private boolean started = false;
-	@Getter private int night = 0;
+	@Getter
+	private boolean started = false;
+	@Getter
+	private int night = 0;
 	private BukkitTask startingTask;
-	@Getter @Setter private int waitTicks;
-	@Getter private boolean day;
-	@Getter public long time = 0;
-	@Getter private HashMap<Integer, LGPlayer> placements = new HashMap<>();
+	@Getter
+	@Setter
+	private int waitTicks;
+	@Getter
+	private boolean day;
+	@Getter
+	public long time = 0;
+	@Getter
+	private HashMap<Integer, LGPlayer> placements = new HashMap<>();
 
-	@Getter private LGChat spectatorChat = new LGChat((sender, message) -> "(REKT) §7" + sender.getFullName() + " §6» §f" + message);
-	@Getter private LGChat dayChat = new LGChat((sender, message) -> "§7" + sender.getFullName() + " §6» §f" + message);
-	@Getter private MultipleValueMap<LGPlayerKilledEvent.Reason, LGPlayer> deaths = new MultipleValueMap<>();
-	@Getter private LGPlayer mayor;
+	@Getter
+	private LGChat spectatorChat = new LGChat(
+			(sender, message) -> "(REKT) §7" + sender.getFullName() + " §6» §f" + message);
+	@Getter
+	private LGChat dayChat = new LGChat((sender, message) -> "§7" + sender.getFullName() + " §6» §f" + message);
+	@Getter
+	private MultipleValueMap<LGPlayerKilledEvent.Reason, LGPlayer> deaths = new MultipleValueMap<>();
+	@Getter
+	private LGPlayer mayor;
 
 	private CustomScoreboard improvedScoreboard;
 	private LGRoleDistributor roleDistributor;
@@ -102,7 +118,7 @@ public class LGGame implements Listener {
 
 	public void sendActionBarMessage(String msg) {
 		WrapperPlayServerChat chat = new WrapperPlayServerChat();
-		chat.setPosition((byte) 2);
+		// chat.setPosition((byte) 2);
 		chat.setMessage(WrappedChatComponent.fromText(msg));
 		for (LGPlayer lgp : inGame)
 			chat.sendPacket(lgp.getPlayer());
@@ -240,11 +256,11 @@ public class LGGame implements Listener {
 			for (LGPlayer other : getInGame()) {
 				other.updatePrefix();
 				if (lgp != other) {
-					player.hidePlayer(other.getPlayer());
-					player.showPlayer(other.getPlayer());
+					player.hidePlayer(MainLg.getInstance(), other.getPlayer());
+					player.showPlayer(MainLg.getInstance(), other.getPlayer());
 
-					other.getPlayer().hidePlayer(player);
-					other.getPlayer().showPlayer(player);
+					other.getPlayer().hidePlayer(MainLg.getInstance(), player);
+					other.getPlayer().showPlayer(MainLg.getInstance(), player);
 				}
 			}
 
@@ -256,8 +272,9 @@ public class LGGame implements Listener {
 				lgp.updatePrefix();
 			}
 
-			broadcastMessage("§7Le joueur §8" + lgp.getFullName() + "§7 a rejoint la partie §9(§8" + inGame.size() + "§7/§8"
-					+ maxPlayers + "§9)");
+			broadcastMessage(
+					"§7Le joueur §8" + lgp.getFullName() + "§7 a rejoint la partie §9(§8" + inGame.size() + "§7/§8"
+							+ maxPlayers + "§9)");
 
 			// Reset scoreboard
 			WrapperPlayServerScoreboardObjective obj = new WrapperPlayServerScoreboardObjective();
@@ -285,8 +302,9 @@ public class LGGame implements Listener {
 	public void updateStart() {
 		if (!isStarted()) {
 
-			if (inGame.size() == maxPlayers) {// Il faut que la partie soit totalement remplie pour qu'elle démarre car sinon,
-																				// tous les rôles ne seraient pas distribués
+			if (inGame.size() == maxPlayers) {// Il faut que la partie soit totalement remplie pour qu'elle démarre car
+												// sinon,
+												// tous les rôles ne seraient pas distribués
 				final MainLg mainLgInstance = MainLg.getInstance();
 				final FileConfiguration config = mainLgInstance.getConfig();
 				final boolean shouldShowScoreboard = config.getBoolean("showScoreboard");
@@ -353,7 +371,8 @@ public class LGGame implements Listener {
 		try {
 			roles = this.roleDistributor.assignRoles();
 		} catch (Exception err) {
-			Bukkit.broadcastMessage("§4§lUne erreur est survenue lors de la création des roles... Regardez la console !");
+			Bukkit.broadcastMessage(
+					"§4§lUne erreur est survenue lors de la création des roles... Regardez la console !");
 			err.printStackTrace();
 		}
 
@@ -392,7 +411,7 @@ public class LGGame implements Listener {
 	private void _start() {
 		broadcastMessage("§8§oDébut de la partie...");
 
-		for (Role role: this.roles) {
+		for (Role role : this.roles) {
 			role.updateItemsForAllMembers();
 		}
 
@@ -428,18 +447,16 @@ public class LGGame implements Listener {
 		final ArrayList<RolePlayers> activeRoles = new ArrayList<>(roleMapping.values());
 		activeRoles.sort((a, b) -> {
 			// TODO fix dégueu juste ici pour le chien loup lg à changer (2x)
-			return (
-				b.getAmountOfPlayers() + (
-					b.getRole().getType() != RoleType.LOUP_GAROU ||
+			return (b.getAmountOfPlayers() + (b.getRole().getType() != RoleType.LOUP_GAROU ||
 					b.getRole() instanceof RChienLoupLG ||
-					b.getRole() instanceof REnfantSauvageLG ? (b.getRole().getType() == RoleType.NEUTRAL ? 0 : 999) : 200
-				) -
-				a.getAmountOfPlayers() - (
-					a.getRole().getType() != RoleType.LOUP_GAROU ||
-					a.getRole() instanceof RChienLoupLG ||
-					a.getRole() instanceof REnfantSauvageLG ? (a.getRole().getType() == RoleType.NEUTRAL ? 0 : 999) : 200
-				)
-			);
+					b.getRole() instanceof REnfantSauvageLG ? (b.getRole().getType() == RoleType.NEUTRAL ? 0 : 999)
+							: 200)
+					-
+					a.getAmountOfPlayers() - (a.getRole().getType() != RoleType.LOUP_GAROU ||
+							a.getRole() instanceof RChienLoupLG ||
+							a.getRole() instanceof REnfantSauvageLG
+									? (a.getRole().getType() == RoleType.NEUTRAL ? 0 : 999)
+									: 200));
 		});
 
 		this.improvedScoreboard.displayEntries(activeRoles);
@@ -469,7 +486,8 @@ public class LGGame implements Listener {
 				setMayor(getAlive().get(random.nextInt(getAlive().size())));
 				broadcastMessage("§7§l" + mayor.getFullName() + "§9 devient le nouveau §5§lCapitaine§9.");
 				nextNight();
-			}, (player, secondsLeft) -> "§e" + mayor.getFullName() + "§6 choisit qui sera le nouveau §5§lCapitaine§6 (§e"
+			}, (player, secondsLeft) -> "§e" + mayor.getFullName()
+					+ "§6 choisit qui sera le nouveau §5§lCapitaine§6 (§e"
 					+ secondsLeft + " s§6)");
 
 			mayor.choose(choosen -> {
@@ -558,7 +576,8 @@ public class LGGame implements Listener {
 
 	public boolean kill(LGPlayer killed, Reason reason, boolean endGame) {
 		if (killed.getPlayer() != null) {
-			killed.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 999999, 1, false, false));
+			killed.getPlayer()
+					.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 999999, 1, false, false));
 			killed.die();
 
 			for (LGPlayer lgp : getInGame())
@@ -566,12 +585,13 @@ public class LGGame implements Listener {
 					WrapperPlayServerPlayerInfo info = new WrapperPlayServerPlayerInfo();
 					ArrayList<PlayerInfoData> infos = new ArrayList<>();
 					info.setAction(PlayerInfoAction.REMOVE_PLAYER);
-					infos.add(new PlayerInfoData(new WrappedGameProfile(lgp.getPlayer().getUniqueId(), lgp.getName(true)), 0,
+					infos.add(new PlayerInfoData(
+							new WrappedGameProfile(lgp.getPlayer().getUniqueId(), lgp.getName(true)), 0,
 							NativeGameMode.ADVENTURE, WrappedChatComponent.fromText(lgp.getName(true))));
 					info.setData(infos);
 					info.sendPacket(lgp.getPlayer());
 				} else {
-					lgp.getPlayer().hidePlayer(killed.getPlayer());
+					lgp.getPlayer().hidePlayer(MainLg.getInstance(), killed.getPlayer());
 				}
 
 			if (vote != null)
@@ -629,7 +649,8 @@ public class LGGame implements Listener {
 		if (shouldDisplayWinners) {
 			final List<String> winnerNames = winners.stream().map(LGPlayer::getFullName).collect(Collectors.toList());
 			final String winnersFriendlyName = (winners.size() > 1) ? "aux vainqueurs" : "au vainqueur";
-			broadcastMessage("§6§l§oFélicitations " + winnersFriendlyName + ": §7§l" + String.join(", §7", winnerNames));
+			broadcastMessage(
+					"§6§l§oFélicitations " + winnersFriendlyName + ": §7§l" + String.join(", §7", winnerNames));
 		}
 
 		broadcastSpacer();
@@ -750,7 +771,7 @@ public class LGGame implements Listener {
 			if (entry.getKey() == Reason.DONT_DIE)
 				continue;
 			if (entry.getValue().isDead())// On ne fait pas mourir quelqu'un qui est déjà mort (résout le problème du
-																		// dictateur tué par le chasseur)
+											// dictateur tué par le chasseur)
 				continue;
 			if (entry.getValue().getPlayer() != null) {// S'il a deco bah au moins ça crash pas hehe
 				LGPlayerKilledEvent event = new LGPlayerKilledEvent(this, entry.getValue(), entry.getKey());
@@ -814,7 +835,8 @@ public class LGGame implements Listener {
 				setMayor(getAlive().get(random.nextInt(getAlive().size())));
 				broadcastMessage("§7§l" + mayor.getFullName() + "§9 devient le nouveau §5§lCapitaine§9.");
 				startDay();
-			}, (player, secondsLeft) -> "§e" + mayor.getFullName() + "§6 choisit qui sera le nouveau §5§lCapitaine§6 (§e"
+			}, (player, secondsLeft) -> "§e" + mayor.getFullName()
+					+ "§6 choisit qui sera le nouveau §5§lCapitaine§6 (§e"
 					+ secondsLeft + " s§6)");
 
 			mayor.choose(choosen -> {
@@ -886,7 +908,8 @@ public class LGGame implements Listener {
 			vote = new LGVote(180, 20, this, true, true,
 					(player, secondsLeft) -> player.getCache().has("vote")
 							? "§6Tu votes pour §7§l" + player.getCache().<LGPlayer>get("vote").getFullName()
-							: "§6Il te reste §e" + secondsLeft + " seconde" + (secondsLeft > 1 ? "s" : "") + "§6 pour voter");
+							: "§6Il te reste §e" + secondsLeft + " seconde" + (secondsLeft > 1 ? "s" : "")
+									+ "§6 pour voter");
 			vote.start(getAlive(), getInGame(), () -> {
 				if (vote.getChoosen() == null)
 					setMayor(getAlive().get(random.nextInt(getAlive().size())));
@@ -927,7 +950,8 @@ public class LGGame implements Listener {
 			vote = new LGVote(180, 20, this, false, false,
 					(player, secondsLeft) -> player.getCache().has("vote")
 							? "§6Tu votes pour §7§l" + player.getCache().<LGPlayer>get("vote").getName()
-							: "§6Il te reste §e" + secondsLeft + " seconde" + (secondsLeft > 1 ? "s" : "") + "§6 pour voter");
+							: "§6Il te reste §e" + secondsLeft + " seconde" + (secondsLeft > 1 ? "s" : "")
+									+ "§6 pour voter");
 			vote.start(getAlive(), getInGame(), () -> {
 				isPeopleVote = false;
 				if (vote.getChoosen() == null || (vote.isMayorVote() && getMayor() == null))
@@ -966,7 +990,8 @@ public class LGGame implements Listener {
 				vampires++;
 		LGEndCheckEvent event = new LGEndCheckEvent(this,
 				goodGuy == 0 || badGuy == 0
-						? (goodGuy + badGuy == 0 ? LGWinType.EQUAL : (goodGuy > 0 ? LGWinType.VILLAGEOIS : LGWinType.LOUPGAROU))
+						? (goodGuy + badGuy == 0 ? LGWinType.EQUAL
+								: (goodGuy > 0 ? LGWinType.VILLAGEOIS : LGWinType.LOUPGAROU))
 						: LGWinType.NONE);
 
 		if ((badGuy + goodGuy > 0 && solo > 0) || solo > 1 || (badGuy + goodGuy > 0 && vampires > 0)

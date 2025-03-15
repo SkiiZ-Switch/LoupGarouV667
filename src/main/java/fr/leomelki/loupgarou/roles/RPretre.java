@@ -5,12 +5,12 @@ import java.util.Arrays;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftInventoryCustom;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -43,7 +43,8 @@ public class RPretre extends Role {
 		items[5] = new ItemStack(Material.ROTTEN_FLESH);
 		meta = items[5].getItemMeta();
 		meta.setDisplayName("§2§lRessuciter");
-		meta.setLore(Arrays.asList("§8Tu peux ressusciter un §a§lVillageois", "§8mort précédemment pendant la partie."));
+		meta.setLore(
+				Arrays.asList("§8Tu peux ressusciter un §a§lVillageois", "§8mort précédemment pendant la partie."));
 		items[5].setItemMeta(meta);
 	}
 
@@ -107,7 +108,8 @@ public class RPretre extends Role {
 	public boolean hasPlayersLeft() {
 		for (LGPlayer pretre : getPlayers())
 			for (LGPlayer lgp : getGame().getInGame())
-				if (lgp.isDead() && (lgp.getRoleType() == RoleType.VILLAGER || lgp.getRoleType() == pretre.getRoleType()))
+				if (lgp.isDead()
+						&& (lgp.getRoleType() == RoleType.VILLAGER || lgp.getRoleType() == pretre.getRoleType()))
 					return super.hasPlayersLeft();
 		return false;
 	}
@@ -130,14 +132,14 @@ public class RPretre extends Role {
 		for (LGPlayer lgp : getGame().getInGame())
 			if (lgp.isDead() && (lgp.getRoleType() == RoleType.VILLAGER || lgp.getRoleType() == player.getRoleType())) {
 				if (lgp.getPlayer() != null) {
-					player.getPlayer().showPlayer(lgp.getPlayer());
+					player.getPlayer().showPlayer(MainLg.getInstance(), lgp.getPlayer());
 					WrapperPlayServerEntityMetadata meta = new WrapperPlayServerEntityMetadata();
 					meta.setEntityID(lgp.getPlayer().getEntityId());
 					meta.setMetadata(Arrays.asList(new WrappedWatchableObject(invisible, (byte) 0)));
 					meta.sendPacket(player.getPlayer());
 				}
 			} else {
-				player.getPlayer().hidePlayer(lgp.getPlayer());
+				player.getPlayer().hidePlayer(MainLg.getInstance(), lgp.getPlayer());
 			}
 		this.callback = callback;
 		openInventory(player.getPlayer());
@@ -158,7 +160,7 @@ public class RPretre extends Role {
 		if (player.getPlayer() != null) {
 			for (LGPlayer lgp : getGame().getInGame())
 				if (lgp.getPlayer() != null && lgp != player)
-					player.getPlayer().hidePlayer(lgp.getPlayer());
+					player.getPlayer().hidePlayer(MainLg.getInstance(), lgp.getPlayer());
 		}
 	}
 
@@ -205,9 +207,12 @@ public class RPretre extends Role {
 						final String choosenName = choosen.getFullName();
 						if (!choosen.isDead())
 							lgp.sendMessage("§7§l" + choosenName + "§c n'est pas mort.");
-						else if (lgp.getRoleType() == RoleType.LOUP_GAROU && choosen.getRoleType() == RoleType.NEUTRAL) {
-							lgp.sendMessage("§7§l" + choosenName + "§c ne faisait ni partie du §a§lVillage§6 ni des §c§lLoups§6.");
-						} else if (lgp.getRoleType() != RoleType.LOUP_GAROU && choosen.getRoleType() != RoleType.VILLAGER) {
+						else if (lgp.getRoleType() == RoleType.LOUP_GAROU
+								&& choosen.getRoleType() == RoleType.NEUTRAL) {
+							lgp.sendMessage("§7§l" + choosenName
+									+ "§c ne faisait ni partie du §a§lVillage§6 ni des §c§lLoups§6.");
+						} else if (lgp.getRoleType() != RoleType.LOUP_GAROU
+								&& choosen.getRoleType() != RoleType.VILLAGER) {
 							lgp.sendMessage("§7§l" + choosenName + "§c ne faisait pas partie du §a§lVillage§6.");
 						} else {
 							player.getInventory().setItem(8, null);
@@ -274,8 +279,9 @@ public class RPretre extends Role {
 				lgp.getPlayer().updateInventory();
 				LGCustomItems.updateItem(lgp);
 
-				lgp.joinChat(getGame().getDayChat());// Pour qu'il ne parle plus dans le chat des morts (et ne le voit plus) et
-																							// qu'il parle dans le chat des vivants
+				lgp.joinChat(getGame().getDayChat());// Pour qu'il ne parle plus dans le chat des morts (et ne le voit
+														// plus) et
+														// qu'il parle dans le chat des vivants
 				VariousUtils.setWarning(lgp.getPlayer(), true);
 
 				getGame().updateRoleScoreboard();
@@ -284,7 +290,7 @@ public class RPretre extends Role {
 
 				for (LGPlayer player : getGame().getInGame())
 					if (player.getPlayer() != null && player != lgp) {
-						player.getPlayer().showPlayer(lgp.getPlayer());
+						player.getPlayer().showPlayer(MainLg.getInstance(), lgp.getPlayer());
 					}
 			}
 			resurrected.clear();
@@ -293,7 +299,7 @@ public class RPretre extends Role {
 
 	@EventHandler
 	public void onQuitInventory(InventoryCloseEvent e) {
-		if (e.getInventory() instanceof CraftInventoryCustom) {
+		if (e.getInventory().getType() == InventoryType.CHEST) {
 			LGPlayer player = LGPlayer.thePlayer((Player) e.getPlayer());
 			if (player.getRole() == this && inMenu) {
 				new BukkitRunnable() {

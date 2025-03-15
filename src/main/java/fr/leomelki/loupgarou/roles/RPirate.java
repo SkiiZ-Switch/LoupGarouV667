@@ -4,12 +4,12 @@ import java.util.Arrays;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftInventoryCustom;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -211,7 +211,7 @@ public class RPirate extends Role {
 
 	@EventHandler
 	public void onQuitInventory(InventoryCloseEvent e) {
-		if (e.getInventory() instanceof CraftInventoryCustom) {
+		if (e.getInventory().getType() == InventoryType.CHEST) {
 			LGPlayer player = LGPlayer.thePlayer((Player) e.getPlayer());
 			if (player.getRole() == this && inMenu) {
 				new BukkitRunnable() {

@@ -6,7 +6,7 @@ public class VariableCache {
 	private HashMap<String, Object> cache = new HashMap<>();
 
 	public boolean getBoolean(String key) {
-		return new Boolean(get(key));
+		return Boolean.parseBoolean(get(key));
 	}
 
 	public void set(String key, Object value) {
