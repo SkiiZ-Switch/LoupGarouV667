@@ -4,11 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.EnumWrappers;
-
 public class VariousUtils {
 	private VariousUtils() {
 		throw new IllegalStateException("Utility class");
@@ -42,8 +37,6 @@ public class VariousUtils {
 			// ProtocolLibrary.getProtocolManager().sendServerPacket(p, container);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.err.println("error");
-			System.out.println(e.getMessage());
 		}
 		
 		// try {

@@ -134,11 +134,13 @@ public class LGGame implements Listener {
 		waitTask = new BukkitRunnable() {
 			@Override
 			public void run() {
-				for (LGPlayer player : getInGame()) {
-					player.getPlayer().setLevel((short) (Math.floorDiv(waitTicks, 20) + 1));
-					player.getPlayer().setExp((float) waitTicks / (seconds * 20F));
-					if (generator != null)
-						player.sendActionBarMessage(generator.generate(player, Math.floorDiv(waitTicks, 20) + 1));
+				if(waitTicks%20 == 0){
+					for (LGPlayer player : getInGame()) {
+						player.getPlayer().setLevel((short) (Math.floorDiv(waitTicks, 20) + 1));
+						player.getPlayer().setExp((float) waitTicks / (seconds * 20F));
+						if (generator != null)
+							player.sendActionBarMessage(generator.generate(player, Math.floorDiv(waitTicks, 20) + 1));
+					}
 				}
 				if (waitTicks == 0) {
 					for (LGPlayer player : getInGame())
@@ -485,7 +487,6 @@ public class LGGame implements Listener {
 
 		new BukkitRunnable() {
 			int timeoutLeft = timeout * 20;
-
 			@Override
 			public void run() {
 				if (--timeoutLeft <= 20 + 20 * 2) {
