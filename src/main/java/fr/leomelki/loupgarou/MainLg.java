@@ -145,7 +145,9 @@ public class MainLg extends JavaPlugin {
 				.addPacketListener(new PacketAdapter(this, ListenerPriority.NORMAL, PacketType.Play.Server.NAMED_SOUND_EFFECT) {
 					@Override
 					public void onPacketSending(PacketEvent event) {
-						event.setCancelled(true);
+						// Player p = event.getPlayer();
+						// if(MainLg.getInstance().currentGame.getInGame().contains(protocolManager))
+						// event.setCancelled(true);
 						//TODO Remake this part (optional)
 						// WrapperPlayServerNamedSoundEffect sound = new WrapperPlayServerNamedSoundEffect(event.getPacket());
 						// if (sound.getSoundEffect() == Sound.ENTITY_PLAYER_ATTACK_NODAMAGE)

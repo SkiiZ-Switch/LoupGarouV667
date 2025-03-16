@@ -19,26 +19,33 @@ public class VariousUtils {
 	}
 
 	public static void setWarning(Player p, boolean warning) {
-		PacketContainer container = new PacketContainer(PacketType.Play.Server.BLOCK_ACTION);
-		WorldBorder wb = p.getWorld().getWorldBorder();
+		try {
+			// PacketContainer container = new PacketContainer(PacketType.Play.Server.BLOCK_ACTION);
+			// WorldBorder wb = p.getWorld().getWorldBorder();
 
-		container.getWorldBorderActions().write(0, EnumWrappers.WorldBorderAction.INITIALIZE);
+			// container.getWorldBorderActions().write(0, EnumWrappers.WorldBorderAction.INITIALIZE);
 
-		container.getIntegers().write(0, 29999984);
+			// container.getIntegers().write(0, 29999984);
 
-		container.getDoubles().write(0, p.getLocation().getX());
-		container.getDoubles().write(1, p.getLocation().getZ());
+			// container.getDoubles().write(0, p.getLocation().getX());
+			// container.getDoubles().write(1, p.getLocation().getZ());
 
-		container.getDoubles().write(3, wb.getSize());
-		container.getDoubles().write(2, wb.getSize());
+			// container.getDoubles().write(3, wb.getSize());
+			// container.getDoubles().write(2, wb.getSize());
 
-		container.getIntegers().write(2, (int) (warning ? wb.getSize() : wb.getWarningDistance()));
-		container.getIntegers().write(1, 0);
+			// container.getIntegers().write(2, (int) (warning ? wb.getSize() : wb.getWarningDistance()));
+			// container.getIntegers().write(1, 0);
 
-		container.getLongs().write(0, (long) 0);
+			// container.getLongs().write(0, (long) 0);
 
-		//TODO Check if removing try catch doesn't make problem
-		ProtocolLibrary.getProtocolManager().sendServerPacket(p, container);
+			//TODO Check if removing this doesn't make problem
+			// ProtocolLibrary.getProtocolManager().sendServerPacket(p, container);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("error");
+			System.out.println(e.getMessage());
+		}
+		
 		// try {
 		// } catch (InvocationTargetException e) {
 		// 	e.printStackTrace();

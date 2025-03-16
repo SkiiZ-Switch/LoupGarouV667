@@ -23,6 +23,8 @@ public class JoinListener implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
+		System.out.println("player");
+		System.out.println(p.getName());
 		//TODO Remake this part
 		// WrapperPlayServerScoreboardTeam myTeam = new WrapperPlayServerScoreboardTeam();
 		// myTeam.setName(p.getName());
@@ -45,7 +47,7 @@ public class JoinListener implements Listener {
 			}
 		p.setFoodLevel(6);
 		if (e.getJoinMessage() == null || !e.getJoinMessage().equals("joinall"))
-			p.getPlayer().setResourcePack("http://leomelki.fr/mcgames/ressourcepacks/v32/loup_garou.zip");
+			p.getPlayer().setResourcePack("https://download938.mediafire.com/k1mtp1fou3ugfYAuikSNfYurYLEL95wFoEdlGgP5Y3q4ub_j40zHEs6MgS_N0ZIhrftf4iYvxU_ewdxbnn6LripbG5HyvGa14ffSSB0DIoaU3rvU3BunbFtXa-2PaVyIz5JSW8tH_aMUpfseJNiX8OrezHwZoJZOxXVyejt-aZH5ng/x6rz9zlbblby0ce/loup_garou.zip");
 		else {
 			LGPlayer lgp = LGPlayer.thePlayer(e.getPlayer());
 			lgp.showView();
@@ -61,6 +63,7 @@ public class JoinListener implements Listener {
 
 	@EventHandler
 	public void onResoucePack(PlayerResourcePackStatusEvent e) {
+		System.out.println("We are here");
 		if (e.getStatus() == Status.SUCCESSFULLY_LOADED) {
 			Player p = e.getPlayer();
 			LGPlayer lgp = LGPlayer.thePlayer(p);
