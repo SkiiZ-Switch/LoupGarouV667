@@ -31,9 +31,6 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.wrappers.EnumWrappers.ItemSlot;
-import com.comphenix.protocol.wrappers.PlayerInfoData;
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
 
 import fr.leomelki.loupgarou.classes.LGGame;
 import fr.leomelki.loupgarou.classes.LGPlayer;
@@ -149,6 +146,7 @@ public class MainLg extends JavaPlugin {
 					@Override
 					public void onPacketSending(PacketEvent event) {
 						event.setCancelled(true);
+						//TODO Remake this part (optional)
 						// WrapperPlayServerNamedSoundEffect sound = new WrapperPlayServerNamedSoundEffect(event.getPacket());
 						// if (sound.getSoundEffect() == Sound.ENTITY_PLAYER_ATTACK_NODAMAGE)
 						// 	event.setCancelled(true);
@@ -159,36 +157,37 @@ public class MainLg extends JavaPlugin {
 					@Override
 					public void onPacketSending(PacketEvent event) {
 						LGPlayer player = LGPlayer.thePlayer(event.getPlayer());
-						WrapperPlayServerPlayerInfo info = new WrapperPlayServerPlayerInfo(event.getPacket());
-						ArrayList<PlayerInfoData> datas = new ArrayList<>();
-						for (PlayerInfoData data : info.getData()) {
-							LGPlayer lgp = LGPlayer.thePlayer(Bukkit.getPlayer(data.getProfile().getUUID()));
-							if (player.getGame() != null && player.getGame() == lgp.getGame()) {
-								LGUpdatePrefixEvent evt2 = new LGUpdatePrefixEvent(player.getGame(), lgp, player, "");
-								WrappedChatComponent displayName = data.getDisplayName();
-								Bukkit.getPluginManager().callEvent(evt2);
-								if (evt2.getPrefix().length() > 0) {
-									try {
-										if (displayName != null) {
-											JSONTokener tokener = new JSONTokener(displayName.getJson());
-											JSONObject obj = new JSONObject(tokener);
-											displayName = WrappedChatComponent.fromText(evt2.getPrefix() + obj.get("text"));
-										} else {
-											displayName = WrappedChatComponent.fromText(evt2.getPrefix() + data.getProfile().getName());
-										}
-									} catch (JSONException e) {
-										e.printStackTrace();
-									}
-								}
 
-								LGSkinLoadEvent evt = new LGSkinLoadEvent(lgp.getGame(), lgp, player, data.getProfile());
-								Bukkit.getPluginManager().callEvent(evt);
-								datas.add(new PlayerInfoData(evt.getProfile(), data.getLatency(), data.getGameMode(), displayName));
-							} else {
-								datas.add(data);
-							}
-						}
-						info.setData(datas);
+						//TODO Remake this part
+						// ArrayList<PlayerInfoData> datas = new ArrayList<>();
+						// for (PlayerInfoData data : info.getData()) {
+						// 	LGPlayer lgp = LGPlayer.thePlayer(Bukkit.getPlayer(data.getProfile().getUUID()));
+						// 	if (player.getGame() != null && player.getGame() == lgp.getGame()) {
+						// 		LGUpdatePrefixEvent evt2 = new LGUpdatePrefixEvent(player.getGame(), lgp, player, "");
+						// 		WrappedChatComponent displayName = data.getDisplayName();
+						// 		Bukkit.getPluginManager().callEvent(evt2);
+						// 		if (evt2.getPrefix().length() > 0) {
+						// 			try {
+						// 				if (displayName != null) {
+						// 					JSONTokener tokener = new JSONTokener(displayName.getJson());
+						// 					JSONObject obj = new JSONObject(tokener);
+						// 					displayName = WrappedChatComponent.fromText(evt2.getPrefix() + obj.get("text"));
+						// 				} else {
+						// 					displayName = WrappedChatComponent.fromText(evt2.getPrefix() + data.getProfile().getName());
+						// 				}
+						// 			} catch (JSONException e) {
+						// 				e.printStackTrace();
+						// 			}
+						// 		}
+
+						// 		LGSkinLoadEvent evt = new LGSkinLoadEvent(lgp.getGame(), lgp, player, data.getProfile());
+						// 		Bukkit.getPluginManager().callEvent(evt);
+						// 		datas.add(new PlayerInfoData(evt.getProfile(), data.getLatency(), data.getGameMode(), displayName));
+						// 	} else {
+						// 		datas.add(data);
+						// 	}
+						// }
+						// info.setData(datas);
 					}
 				});
 		protocolManager
@@ -206,24 +205,25 @@ public class MainLg extends JavaPlugin {
 					@Override
 					public void onPacketSending(PacketEvent event) {
 						LGPlayer player = LGPlayer.thePlayer(event.getPlayer());
-						WrapperPlayServerScoreboardTeam team = new WrapperPlayServerScoreboardTeam(event.getPacket());
-						team.setColor(ChatColor.WHITE);
-						Player other = Bukkit.getPlayer(team.getName());
-						if (other == null)
-							return;
-						LGPlayer lgp = LGPlayer.thePlayer(other);
-						if (player.getGame() != null && player.getGame() == lgp.getGame()) {
-							LGUpdatePrefixEvent evt2 = new LGUpdatePrefixEvent(player.getGame(), lgp, player, "");
-							Bukkit.getPluginManager().callEvent(evt2);
-							if (evt2.getPrefix().length() > 0)
-								team.setPrefix(WrappedChatComponent.fromText(evt2.getPrefix()));
-							else {
-								team.setPrefix(WrappedChatComponent.fromText("§f"));
-								if (lgp.getNick() != null) {
-									team.setSuffix(WrappedChatComponent.fromText("§8 => §b" + lgp.getName()));
-								}
-							}
-						}
+						//TODO Remake this part
+						// WrapperPlayServerScoreboardTeam team = new WrapperPlayServerScoreboardTeam(event.getPacket());
+						// team.setColor(ChatColor.WHITE);
+						// Player other = Bukkit.getPlayer(team.getName());
+						// if (other == null)
+						// 	return;
+						// LGPlayer lgp = LGPlayer.thePlayer(other);
+						// if (player.getGame() != null && player.getGame() == lgp.getGame()) {
+						// 	LGUpdatePrefixEvent evt2 = new LGUpdatePrefixEvent(player.getGame(), lgp, player, "");
+						// 	Bukkit.getPluginManager().callEvent(evt2);
+						// 	if (evt2.getPrefix().length() > 0)
+						// 		team.setPrefix(WrappedChatComponent.fromText(evt2.getPrefix()));
+						// 	else {
+						// 		team.setPrefix(WrappedChatComponent.fromText("§f"));
+						// 		if (lgp.getNick() != null) {
+						// 			team.setSuffix(WrappedChatComponent.fromText("§8 => §b" + lgp.getName()));
+						// 		}
+						// 	}
+						// }
 					}
 				});
 		protocolManager
@@ -232,9 +232,7 @@ public class MainLg extends JavaPlugin {
 					public void onPacketSending(PacketEvent event) {
 						LGPlayer player = LGPlayer.thePlayer(event.getPlayer());
 						if (player.getGame() != null) {
-							WrapperPlayServerEntityEquipment equip = new WrapperPlayServerEntityEquipment(event.getPacket());
-							if (equip.getSlot() == ItemSlot.OFFHAND && equip.getEntityID() != player.getPlayer().getEntityId())
-								equip.setItem(new ItemStack(Material.AIR));
+							player.getPlayer().getInventory().setItemInMainHand(new ItemStack(Material.AIR));
 						}
 					}
 				});

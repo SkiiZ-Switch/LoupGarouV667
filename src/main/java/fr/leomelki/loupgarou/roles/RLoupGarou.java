@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerScoreboardTeam;
 import fr.leomelki.loupgarou.classes.LGCustomSkin;
 import fr.leomelki.loupgarou.classes.LGGame;
 import fr.leomelki.loupgarou.classes.LGPlayer;
@@ -161,12 +160,13 @@ public class RLoupGarou extends Role {
 	@EventHandler
 	public void onGameJoin(LGGameEndEvent e) {
 		if (e.getGame() == getGame()) {
-			WrapperPlayServerScoreboardTeam teamDelete = new WrapperPlayServerScoreboardTeam();
-			teamDelete.setMode(1);
-			teamDelete.setName("loup_garou_list");
-
-			for (LGPlayer lgp : getGame().getInGame())
-				teamDelete.sendPacket(lgp.getPlayer());
+			// WrapperPlayServerScoreboardTeam teamDelete = new WrapperPlayServerScoreboardTeam();
+			// teamDelete.setMode(1);
+			// teamDelete.setName("loup_garou_list");
+			//TODO remake scoreboard
+			for (LGPlayer lgp : getGame().getInGame()){
+				
+			}
 		}
 	}
 

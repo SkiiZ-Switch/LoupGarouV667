@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerHeldItemSlot;
 import fr.leomelki.loupgarou.MainLg;
 import fr.leomelki.loupgarou.classes.LGGame;
 import fr.leomelki.loupgarou.classes.LGPlayer;
@@ -153,9 +152,8 @@ public class RPirate extends Role {
 			player.getInventory().setItem(8, items[3]);
 			player.updateInventory();
 			// Pour éviter les missclick
-			WrapperPlayServerHeldItemSlot held = new WrapperPlayServerHeldItemSlot();
-			held.setSlot(0);
-			held.sendPacket(player);
+			player.getInventory().setHeldItemSlot(0);
+
 			lgp.sendMessage("§6Choisissez votre otage.");
 			lgp.choose(new LGChooseCallback() {
 

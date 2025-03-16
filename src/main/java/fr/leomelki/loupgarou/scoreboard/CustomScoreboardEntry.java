@@ -1,12 +1,5 @@
 package fr.leomelki.loupgarou.scoreboard;
 
-import java.util.Arrays;
-
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
-import com.comphenix.protocol.wrappers.EnumWrappers.ScoreboardAction;
-
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerScoreboardScore;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerScoreboardTeam;
 import fr.leomelki.loupgarou.classes.LGPlayer;
 
 public class CustomScoreboardEntry {
@@ -14,7 +7,7 @@ public class CustomScoreboardEntry {
 	private final CustomScoreboard scoreboard;
 	private final String name;
 	private final String scoreboardName;
-	private WrappedChatComponent prefix;
+	// private WrappedChatComponent prefix;
 
 	public CustomScoreboardEntry(CustomScoreboard scoreboard, String rawName, int amount) {
 		this.amount = amount;
@@ -25,21 +18,22 @@ public class CustomScoreboardEntry {
 	}
 
 	public void show() {
-		WrapperPlayServerScoreboardTeam team = new WrapperPlayServerScoreboardTeam();
-		team.setPlayers(Arrays.asList(this.name));
-		team.setPrefix(this.prefix);
-		team.setName(this.name);
-		team.setMode(0);
+		//TODO Remake this part
+		// WrapperPlayServerScoreboardTeam team = new WrapperPlayServerScoreboardTeam();
+		// team.setPlayers(Arrays.asList(this.name));
+		// team.setPrefix(this.prefix);
+		// team.setName(this.name);
+		// team.setMode(0);
 
-		WrapperPlayServerScoreboardScore score = new WrapperPlayServerScoreboardScore();
-		score.setScoreboardAction(ScoreboardAction.CHANGE);
-		score.setObjectiveName(this.scoreboardName);
-		score.setScoreName(name);
-		score.setValue(this.amount);
+		// WrapperPlayServerScoreboardScore score = new WrapperPlayServerScoreboardScore();
+		// score.setScoreboardAction(ScoreboardAction.CHANGE);
+		// score.setObjectiveName(this.scoreboardName);
+		// score.setScoreName(name);
+		// score.setValue(this.amount);
 
 		for (LGPlayer current : this.scoreboard.getInGamePlayers()) {
-			team.sendPacket(current.getPlayer().getPlayer());
-			score.sendPacket(current.getPlayer().getPlayer());
+			// team.sendPacket(current.getPlayer().getPlayer());
+			// score.sendPacket(current.getPlayer().getPlayer());
 		}
 	}
 
@@ -75,7 +69,7 @@ public class CustomScoreboardEntry {
 			suffix = "§" + colorCode + rawName.substring(limit);
 		}
 
-		this.prefix = WrappedChatComponent.fromText(sringifiedPrefix);
+		// this.prefix = WrappedChatComponent.fromText(sringifiedPrefix);
 
 		return suffix;
 	}
@@ -86,19 +80,20 @@ public class CustomScoreboardEntry {
 
 	public void hide() {
 		if (scoreboard.isShown()) {
-			WrapperPlayServerScoreboardScore score = new WrapperPlayServerScoreboardScore();
-			score.setObjectiveName(scoreboard.getName());
-			score.setScoreboardAction(ScoreboardAction.REMOVE);
-			score.setScoreName(this.name);
-			score.setValue(this.amount);
+			//TODO Remake this part
+			// WrapperPlayServerScoreboardScore score = new WrapperPlayServerScoreboardScore();
+			// score.setObjectiveName(scoreboard.getName());
+			// score.setScoreboardAction(ScoreboardAction.REMOVE);
+			// score.setScoreName(this.name);
+			// score.setValue(this.amount);
 
-			WrapperPlayServerScoreboardTeam team = new WrapperPlayServerScoreboardTeam();
-			team.setName(this.name);
-			team.setMode(1);
+			// WrapperPlayServerScoreboardTeam team = new WrapperPlayServerScoreboardTeam();
+			// team.setName(this.name);
+			// team.setMode(1);
 
 			for (LGPlayer current : this.scoreboard.getInGamePlayers()) {
-				team.sendPacket(current.getPlayer().getPlayer());
-				score.sendPacket(current.getPlayer().getPlayer());
+				// team.sendPacket(current.getPlayer().getPlayer());
+				// score.sendPacket(current.getPlayer().getPlayer());
 			}
 		}
 	}

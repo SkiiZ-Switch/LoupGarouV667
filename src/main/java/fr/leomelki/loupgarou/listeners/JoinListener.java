@@ -14,9 +14,6 @@ import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent.Status;
 import org.bukkit.potion.PotionEffectType;
 
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
-
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerScoreboardTeam;
 import fr.leomelki.loupgarou.MainLg;
 import fr.leomelki.loupgarou.classes.LGPlayer;
 import fr.leomelki.loupgarou.events.LGPlayerKilledEvent.Reason;
@@ -26,25 +23,25 @@ public class JoinListener implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
-
-		WrapperPlayServerScoreboardTeam myTeam = new WrapperPlayServerScoreboardTeam();
-		myTeam.setName(p.getName());
-		myTeam.setPrefix(WrappedChatComponent.fromText(""));
-		myTeam.setPlayers(Arrays.asList(p.getName()));
-		myTeam.setMode(0);
+		//TODO Remake this part
+		// WrapperPlayServerScoreboardTeam myTeam = new WrapperPlayServerScoreboardTeam();
+		// myTeam.setName(p.getName());
+		// myTeam.setPrefix(WrappedChatComponent.fromText(""));
+		// myTeam.setPlayers(Arrays.asList(p.getName()));
+		// myTeam.setMode(0);
 		boolean noSpec = p.getGameMode() != GameMode.SPECTATOR;
 		for (Player player : Bukkit.getOnlinePlayers())
 			if (player != p) {
 				if (player.getGameMode() != GameMode.SPECTATOR)
 					player.hidePlayer(MainLg.getInstance(), p);
-				WrapperPlayServerScoreboardTeam team = new WrapperPlayServerScoreboardTeam();
-				team.setName(player.getName());
-				team.setPrefix(WrappedChatComponent.fromText(""));
-				team.setPlayers(Arrays.asList(player.getName()));
-				team.setMode(0);
+				// WrapperPlayServerScoreboardTeam team = new WrapperPlayServerScoreboardTeam();
+				// team.setName(player.getName());
+				// team.setPrefix(WrappedChatComponent.fromText(""));
+				// team.setPlayers(Arrays.asList(player.getName()));
+				// team.setMode(0);
 
-				team.sendPacket(p);
-				myTeam.sendPacket(player);
+				// team.sendPacket(p);
+				// myTeam.sendPacket(player);
 			}
 		p.setFoodLevel(6);
 		if (e.getJoinMessage() == null || !e.getJoinMessage().equals("joinall"))

@@ -1,7 +1,5 @@
 package fr.leomelki.loupgarou.utils;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.bukkit.Location;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
@@ -21,7 +19,7 @@ public class VariousUtils {
 	}
 
 	public static void setWarning(Player p, boolean warning) {
-		PacketContainer container = new PacketContainer(PacketType.Play.Server.WORLD_BORDER);
+		PacketContainer container = new PacketContainer(PacketType.Play.Server.BLOCK_ACTION);
 		WorldBorder wb = p.getWorld().getWorldBorder();
 
 		container.getWorldBorderActions().write(0, EnumWrappers.WorldBorderAction.INITIALIZE);
@@ -39,11 +37,12 @@ public class VariousUtils {
 
 		container.getLongs().write(0, (long) 0);
 
-		try {
-			ProtocolLibrary.getProtocolManager().sendServerPacket(p, container);
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
+		//TODO Check if removing try catch doesn't make problem
+		ProtocolLibrary.getProtocolManager().sendServerPacket(p, container);
+		// try {
+		// } catch (InvocationTargetException e) {
+		// 	e.printStackTrace();
+		// }
 	}
 
 	private static char[] hex = "0123456789abcdef".toCharArray();

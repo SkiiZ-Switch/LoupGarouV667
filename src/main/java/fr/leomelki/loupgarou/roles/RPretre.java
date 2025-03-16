@@ -18,12 +18,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import com.comphenix.protocol.wrappers.WrappedDataWatcher.WrappedDataWatcherObject;
-import com.comphenix.protocol.wrappers.WrappedWatchableObject;
-
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerEntityMetadata;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerHeldItemSlot;
 import fr.leomelki.loupgarou.MainLg;
 import fr.leomelki.loupgarou.classes.LGCustomItems;
 import fr.leomelki.loupgarou.classes.LGGame;
@@ -124,8 +118,6 @@ public class RPretre extends Role {
 		player.openInventory(inventory);
 	}
 
-	WrappedDataWatcherObject invisible = new WrappedDataWatcherObject(0, WrappedDataWatcher.Registry.get(Byte.class));
-
 	@Override
 	protected void onNightTurn(LGPlayer player, Runnable callback) {
 		player.showView();
@@ -133,10 +125,11 @@ public class RPretre extends Role {
 			if (lgp.isDead() && (lgp.getRoleType() == RoleType.VILLAGER || lgp.getRoleType() == player.getRoleType())) {
 				if (lgp.getPlayer() != null) {
 					player.getPlayer().showPlayer(MainLg.getInstance(), lgp.getPlayer());
-					WrapperPlayServerEntityMetadata meta = new WrapperPlayServerEntityMetadata();
-					meta.setEntityID(lgp.getPlayer().getEntityId());
-					meta.setMetadata(Arrays.asList(new WrappedWatchableObject(invisible, (byte) 0)));
-					meta.sendPacket(player.getPlayer());
+					//TODO Check à quoi ça sert ce truc
+					// WrapperPlayServerEntityMetadata meta = new WrapperPlayServerEntityMetadata();
+					// meta.setEntityID(lgp.getPlayer().getEntityId());
+					// meta.setMetadata(Arrays.asList(new WrappedWatchableObject(invisible, (byte) 0)));
+					// meta.sendPacket(player.getPlayer());
 				}
 			} else {
 				player.getPlayer().hidePlayer(MainLg.getInstance(), lgp.getPlayer());
@@ -194,9 +187,8 @@ public class RPretre extends Role {
 			player.getInventory().setItem(8, items[3]);
 			player.updateInventory();
 			// Pour éviter les missclick
-			WrapperPlayServerHeldItemSlot held = new WrapperPlayServerHeldItemSlot();
-			held.setSlot(0);
-			held.sendPacket(player);
+			player.getInventory().setHeldItemSlot(0);
+
 			lgp.sendMessage("§6Choisissez qui réssusciter.");
 			lgp.enableAbilityToSelectDead();
 			lgp.choose(new LGChooseCallback() {

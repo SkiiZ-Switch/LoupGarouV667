@@ -3,10 +3,6 @@ package fr.leomelki.loupgarou.scoreboard;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
-
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerScoreboardDisplayObjective;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerScoreboardObjective;
 import fr.leomelki.loupgarou.classes.LGPlayer;
 import fr.leomelki.loupgarou.classes.RolePlayers;
 import fr.leomelki.loupgarou.roles.Role;
@@ -67,30 +63,32 @@ public class CustomScoreboard {
 	}
 
 	public void show() {
-		WrapperPlayServerScoreboardObjective objective = new WrapperPlayServerScoreboardObjective();
-		objective.setMode(0);
-		objective.setName(name);
-		objective.setDisplayName(WrappedChatComponent.fromText(DISPLAY_NAME));
+		//TODO Remake this part
+		// WrapperPlayServerScoreboardObjective objective = new WrapperPlayServerScoreboardObjective();
+		// objective.setMode(0);
+		// objective.setName(name);
+		// objective.setDisplayName(WrappedChatComponent.fromText(DISPLAY_NAME));
 
-		WrapperPlayServerScoreboardDisplayObjective display = new WrapperPlayServerScoreboardDisplayObjective();
-		display.setPosition(1);
-		display.setScoreName(name);
+		// WrapperPlayServerScoreboardDisplayObjective display = new WrapperPlayServerScoreboardDisplayObjective();
+		// display.setPosition(1);
+		// display.setScoreName(name);
 
 		for (LGPlayer currentPlayer : inGamePlayers) {
-			objective.sendPacket(currentPlayer.getPlayer());
-			display.sendPacket(currentPlayer.getPlayer());
+			// objective.sendPacket(currentPlayer.getPlayer());
+			// display.sendPacket(currentPlayer.getPlayer());
 		}
 
 		shown = true;
 	}
 
 	public void hide() {
-		WrapperPlayServerScoreboardObjective remove = new WrapperPlayServerScoreboardObjective();
-		remove.setMode(1);
-		remove.setName(name);
+		//TODO Remake this part
+		// WrapperPlayServerScoreboardObjective remove = new WrapperPlayServerScoreboardObjective();
+		// remove.setMode(1);
+		// remove.setName(name);
 
 		for (LGPlayer currentPlayer : inGamePlayers) {
-			remove.sendPacket(currentPlayer.getPlayer());
+			// remove.sendPacket(currentPlayer.getPlayer());
 		}
 
 		this.removePreexistingEntries();

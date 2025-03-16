@@ -28,12 +28,6 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
-import com.comphenix.protocol.wrappers.EnumWrappers.NativeGameMode;
-import com.comphenix.protocol.wrappers.EnumWrappers.PlayerInfoAction;
-import com.comphenix.protocol.wrappers.PlayerInfoData;
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
-import com.comphenix.protocol.wrappers.WrappedGameProfile;
-
 import fr.leomelki.loupgarou.MainLg;
 import fr.leomelki.loupgarou.classes.LGCustomItems.LGCustomItemsConstraints;
 import fr.leomelki.loupgarou.classes.chat.LGChat;

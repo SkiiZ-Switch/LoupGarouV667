@@ -14,16 +14,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.comphenix.protocol.wrappers.EnumWrappers.ItemSlot;
-import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import com.comphenix.protocol.wrappers.WrappedDataWatcher.WrappedDataWatcherObject;
-import com.comphenix.protocol.wrappers.WrappedWatchableObject;
-
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerEntityDestroy;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerEntityEquipment;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerEntityLook;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerEntityMetadata;
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerSpawnEntityLiving;
 import fr.leomelki.loupgarou.MainLg;
 import fr.leomelki.loupgarou.classes.LGGame.TextGenerator;
 import fr.leomelki.loupgarou.classes.LGPlayer.LGChooseCallback;
@@ -306,10 +296,11 @@ public class LGVote {
 
 	private void updateVotes(LGPlayer voted, boolean kill) {
 		int entityId = Integer.MIN_VALUE + voted.getPlayer().getEntityId();
-		WrapperPlayServerEntityDestroy destroy = new WrapperPlayServerEntityDestroy();
-		destroy.setEntityIds(new int[] { entityId });
-		for (LGPlayer lgp : viewers)
-			destroy.sendPacket(lgp.getPlayer());
+		//TODO Remake this part
+		// WrapperPlayServerEntityDestroy destroy = new WrapperPlayServerEntityDestroy();
+		// destroy.setEntityIds(new int[] { entityId });
+		// for (LGPlayer lgp : viewers)
+		// 	destroy.sendPacket(lgp.getPlayer());
 
 		if (!kill) {
 			int max = 0;
@@ -327,12 +318,13 @@ public class LGVote {
 		if (votes.containsKey(voted) && !kill) {
 			Location loc = voted.getPlayer().getLocation();
 			
-			WrapperPlayServerSpawnEntityLiving spawn = new WrapperPlayServerSpawnEntityLiving();
-			spawn.setEntityID(entityId);
-			spawn.setType(EntityType.UNKNOWN);
-			spawn.setX(loc.getX());
-			spawn.setY(loc.getY() + 0.3);
-			spawn.setZ(loc.getZ());
+			//TODO Remake this part
+			// WrapperPlayServerSpawnEntityLiving spawn = new WrapperPlayServerSpawnEntityLiving();
+			// spawn.setEntityID(entityId);
+			// spawn.setType(EntityType.UNKNOWN);
+			// spawn.setX(loc.getX());
+			// spawn.setY(loc.getY() + 0.3);
+			// spawn.setZ(loc.getZ());
 
 			int votesNbr = votes.get(voted).size();
 			final int numberOfParticipants = participants.size();
@@ -356,10 +348,10 @@ public class LGVote {
 		}
 	}
 
-	WrappedDataWatcherObject invisible = new WrappedDataWatcherObject(0, WrappedDataWatcher.Registry.get(Byte.class));
-	WrappedDataWatcherObject noGravity = new WrappedDataWatcherObject(5, WrappedDataWatcher.Registry.get(Boolean.class));
-	WrappedDataWatcherObject customNameVisible = new WrappedDataWatcherObject(3,
-			WrappedDataWatcher.Registry.get(Boolean.class));
+	// WrappedDataWatcherObject invisible = new WrappedDataWatcherObject(0, WrappedDataWatcher.Registry.get(Byte.class));
+	// WrappedDataWatcherObject noGravity = new WrappedDataWatcherObject(5, WrappedDataWatcher.Registry.get(Boolean.class));
+	// WrappedDataWatcherObject customNameVisible = new WrappedDataWatcherObject(3,
+	// 		WrappedDataWatcher.Registry.get(Boolean.class));
 	// WrappedDataWatcherObject customName = new WrappedDataWatcherObject(2,
 	// 		WrappedDataWatcher.Registry.get(IChatBaseComponent.class));
 	// WrappedDataWatcherObject item = new WrappedDataWatcherObject(7,
@@ -367,99 +359,101 @@ public class LGVote {
 
 	private void showVoting(LGPlayer to, LGPlayer ofWho) {
 		int entityId = -to.getPlayer().getEntityId();
-		WrapperPlayServerEntityDestroy destroy = new WrapperPlayServerEntityDestroy();
-		destroy.setEntityIds(new int[] { entityId });
-		destroy.sendPacket(to.getPlayer());
-		if (ofWho != null) {
-			WrapperPlayServerSpawnEntityLiving spawn = new WrapperPlayServerSpawnEntityLiving();
-			spawn.setEntityID(entityId);
-			spawn.setType(EntityType.UNKNOWN);
-			Location loc = ofWho.getPlayer().getLocation();
-			spawn.setX(loc.getX());
-			spawn.setY(loc.getY() + 1.3);
-			spawn.setZ(loc.getZ());
-			spawn.setHeadPitch(0);
-			Location toLoc = to.getPlayer().getLocation();
-			double diffX = loc.getX() - toLoc.getX();
-			double diffZ = loc.getZ() - toLoc.getZ();
-			float yaw = 180 - ((float) Math.toDegrees(Math.atan2(diffX, diffZ)));
+		//TODO Remake this part
+		// WrapperPlayServerEntityDestroy destroy = new WrapperPlayServerEntityDestroy();
+		// destroy.setEntityIds(new int[] { entityId });
+		// destroy.sendPacket(to.getPlayer());
+		// if (ofWho != null) {
+		// 	WrapperPlayServerSpawnEntityLiving spawn = new WrapperPlayServerSpawnEntityLiving();
+		// 	spawn.setEntityID(entityId);
+		// 	spawn.setType(EntityType.UNKNOWN);
+		// 	Location loc = ofWho.getPlayer().getLocation();
+		// 	spawn.setX(loc.getX());
+		// 	spawn.setY(loc.getY() + 1.3);
+		// 	spawn.setZ(loc.getZ());
+		// 	spawn.setHeadPitch(0);
+		// 	Location toLoc = to.getPlayer().getLocation();
+		// 	double diffX = loc.getX() - toLoc.getX();
+		// 	double diffZ = loc.getZ() - toLoc.getZ();
+		// 	float yaw = 180 - ((float) Math.toDegrees(Math.atan2(diffX, diffZ)));
 
-			spawn.setYaw(yaw);
-			spawn.sendPacket(to.getPlayer());
+		// 	spawn.setYaw(yaw);
+		// 	spawn.sendPacket(to.getPlayer());
 
-			WrapperPlayServerEntityMetadata meta = new WrapperPlayServerEntityMetadata();
-			meta.setEntityID(entityId);
-			meta.setMetadata(Arrays.asList(new WrappedWatchableObject(invisible, (byte) 0x20),
-					new WrappedWatchableObject(noGravity, true)));
-			meta.sendPacket(to.getPlayer());
+		// 	WrapperPlayServerEntityMetadata meta = new WrapperPlayServerEntityMetadata();
+		// 	meta.setEntityID(entityId);
+		// 	meta.setMetadata(Arrays.asList(new WrappedWatchableObject(invisible, (byte) 0x20),
+		// 			new WrappedWatchableObject(noGravity, true)));
+		// 	meta.sendPacket(to.getPlayer());
 
-			WrapperPlayServerEntityLook look = new WrapperPlayServerEntityLook();
-			look.setEntityID(entityId);
-			look.setPitch(0);
-			look.setYaw(yaw);
-			look.sendPacket(to.getPlayer());
+		// 	WrapperPlayServerEntityLook look = new WrapperPlayServerEntityLook();
+		// 	look.setEntityID(entityId);
+		// 	look.setPitch(0);
+		// 	look.setYaw(yaw);
+		// 	look.sendPacket(to.getPlayer());
 
-			new BukkitRunnable() {
+		// 	new BukkitRunnable() {
 
-				@Override
-				public void run() {
-					WrapperPlayServerEntityEquipment equip = new WrapperPlayServerEntityEquipment();
-					equip.setEntityID(entityId);
-					equip.setSlot(ItemSlot.HEAD);
-					ItemStack skull = new ItemStack(Material.EMERALD);
-					equip.setItem(skull);
-					equip.sendPacket(to.getPlayer());
-				}
-			}.runTaskLater(MainLg.getInstance(), 2);
-		}
+		// 		@Override
+		// 		public void run() {
+		// 			WrapperPlayServerEntityEquipment equip = new WrapperPlayServerEntityEquipment();
+		// 			equip.setEntityID(entityId);
+		// 			equip.setSlot(ItemSlot.HEAD);
+		// 			ItemStack skull = new ItemStack(Material.EMERALD);
+		// 			equip.setItem(skull);
+		// 			equip.sendPacket(to.getPlayer());
+		// 		}
+		// 	}.runTaskLater(MainLg.getInstance(), 2);
+		// }
 	}
 
 	private void showArrow(LGPlayer to, LGPlayer ofWho, int entityId) {
-		WrapperPlayServerEntityDestroy destroy = new WrapperPlayServerEntityDestroy();
-		destroy.setEntityIds(new int[] { entityId });
-		destroy.sendPacket(to.getPlayer());
-		if (ofWho != null) {
-			WrapperPlayServerSpawnEntityLiving spawn = new WrapperPlayServerSpawnEntityLiving();
-			spawn.setEntityID(entityId);
-			spawn.setType(EntityType.UNKNOWN);
-			Location loc = ofWho.getPlayer().getLocation();
-			spawn.setX(loc.getX());
-			spawn.setY(loc.getY() + 1.3);
-			spawn.setZ(loc.getZ());
-			spawn.setHeadPitch(0);
-			Location toLoc = to.getPlayer().getLocation();
-			double diffX = loc.getX() - toLoc.getX();
-			double diffZ = loc.getZ() - toLoc.getZ();
-			float yaw = 180 - ((float) Math.toDegrees(Math.atan2(diffX, diffZ)));
+		//TODO Remake this part
+		// WrapperPlayServerEntityDestroy destroy = new WrapperPlayServerEntityDestroy();
+		// destroy.setEntityIds(new int[] { entityId });
+		// destroy.sendPacket(to.getPlayer());
+		// if (ofWho != null) {
+		// 	WrapperPlayServerSpawnEntityLiving spawn = new WrapperPlayServerSpawnEntityLiving();
+		// 	spawn.setEntityID(entityId);
+		// 	spawn.setType(EntityType.UNKNOWN);
+		// 	Location loc = ofWho.getPlayer().getLocation();
+		// 	spawn.setX(loc.getX());
+		// 	spawn.setY(loc.getY() + 1.3);
+		// 	spawn.setZ(loc.getZ());
+		// 	spawn.setHeadPitch(0);
+		// 	Location toLoc = to.getPlayer().getLocation();
+		// 	double diffX = loc.getX() - toLoc.getX();
+		// 	double diffZ = loc.getZ() - toLoc.getZ();
+		// 	float yaw = 180 - ((float) Math.toDegrees(Math.atan2(diffX, diffZ)));
 
-			spawn.setYaw(yaw);
-			spawn.sendPacket(to.getPlayer());
+		// 	spawn.setYaw(yaw);
+		// 	spawn.sendPacket(to.getPlayer());
 
-			WrapperPlayServerEntityMetadata meta = new WrapperPlayServerEntityMetadata();
-			meta.setEntityID(entityId);
-			meta.setMetadata(Arrays.asList(new WrappedWatchableObject(invisible, (byte) 0x20),
-					new WrappedWatchableObject(noGravity, true)));
-			meta.sendPacket(to.getPlayer());
+		// 	WrapperPlayServerEntityMetadata meta = new WrapperPlayServerEntityMetadata();
+		// 	meta.setEntityID(entityId);
+		// 	meta.setMetadata(Arrays.asList(new WrappedWatchableObject(invisible, (byte) 0x20),
+		// 			new WrappedWatchableObject(noGravity, true)));
+		// 	meta.sendPacket(to.getPlayer());
 
-			WrapperPlayServerEntityLook look = new WrapperPlayServerEntityLook();
-			look.setEntityID(entityId);
-			look.setPitch(0);
-			look.setYaw(yaw);
-			look.sendPacket(to.getPlayer());
+		// 	WrapperPlayServerEntityLook look = new WrapperPlayServerEntityLook();
+		// 	look.setEntityID(entityId);
+		// 	look.setPitch(0);
+		// 	look.setYaw(yaw);
+		// 	look.sendPacket(to.getPlayer());
 
-			new BukkitRunnable() {
+		// 	new BukkitRunnable() {
 
-				@Override
-				public void run() {
-					WrapperPlayServerEntityEquipment equip = new WrapperPlayServerEntityEquipment();
-					equip.setEntityID(entityId);
-					equip.setSlot(ItemSlot.HEAD);
-					ItemStack skull = new ItemStack(Material.EMERALD);
-					equip.setItem(skull);
-					equip.sendPacket(to.getPlayer());
-				}
-			}.runTaskLater(MainLg.getInstance(), 2);
-		}
+		// 		@Override
+		// 		public void run() {
+		// 			WrapperPlayServerEntityEquipment equip = new WrapperPlayServerEntityEquipment();
+		// 			equip.setEntityID(entityId);
+		// 			equip.setSlot(ItemSlot.HEAD);
+		// 			ItemStack skull = new ItemStack(Material.EMERALD);
+		// 			equip.setItem(skull);
+		// 			equip.sendPacket(to.getPlayer());
+		// 		}
+		// 	}.runTaskLater(MainLg.getInstance(), 2);
+		// }
 	}
 
 	public void remove(LGPlayer killed) {

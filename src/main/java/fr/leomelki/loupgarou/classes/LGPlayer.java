@@ -12,13 +12,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.comphenix.protocol.wrappers.EnumWrappers.NativeGameMode;
-import com.comphenix.protocol.wrappers.EnumWrappers.PlayerInfoAction;
-import com.comphenix.protocol.wrappers.EnumWrappers.TitleAction;
-import com.comphenix.protocol.wrappers.PlayerInfoData;
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
-import com.comphenix.protocol.wrappers.WrappedGameProfile;
-
 import fr.leomelki.loupgarou.MainLg;
 import fr.leomelki.loupgarou.classes.chat.LGChat;
 import fr.leomelki.loupgarou.classes.chat.LGChat.LGChatCallback;

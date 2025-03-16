@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import fr.leomelki.com.comphenix.packetwrapper.WrapperPlayServerHeldItemSlot;
 import fr.leomelki.loupgarou.MainLg;
 import fr.leomelki.loupgarou.classes.LGGame;
 import fr.leomelki.loupgarou.classes.LGPlayer;
@@ -183,10 +182,8 @@ public class RSorciere extends Role {
 			player.updateInventory();
 
 			// On le met sur le slot 0 pour éviter un missclick sur la croix
-			WrapperPlayServerHeldItemSlot hold = new WrapperPlayServerHeldItemSlot();
-			hold.setSlot(0);
-			hold.sendPacket(lgp.getPlayer());
-
+			player.getInventory().setHeldItemSlot(0);
+			
 			closeInventory(player);
 			lgp.choose(choosen -> {
 				if (choosen != null) {
