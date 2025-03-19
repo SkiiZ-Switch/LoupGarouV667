@@ -708,6 +708,7 @@ public class LGGame implements Listener {
 
 			Player p = lgp.getPlayer();
 			lgp.showView();
+			lgp.getPlayer().setGameMode(GameMode.ADVENTURE);
 			p.removePotionEffect(PotionEffectType.JUMP_BOOST);
 			p.setWalkSpeed(0.2f);
 		}
