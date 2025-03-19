@@ -349,7 +349,7 @@ public class LGGame implements Listener {
 			placements.put(lgp.getPlace(), lgp);
 			p.teleport(new Location(p.getWorld(), location.get(0) + 0.5, location.get(1), location.get(2) + 0.5,
 					location.get(3).floatValue(), location.get(4).floatValue()));
-			p.setFoodLevel(6);
+			p.setFoodLevel(20);
 			p.setSaturation(1);
 			p.setHealth(20);
 		}

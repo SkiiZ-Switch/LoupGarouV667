@@ -56,7 +56,7 @@ public class LGRoleDistributor {
 
   private void setRoleToPlayer(LGPlayer selected, Role givenRole) {
     givenRole.joinAndDisplayRole(selected);
-    selected.getPlayer().setFoodLevel(6);
+    selected.getPlayer().setFoodLevel(20);
     selected.getPlayer().setSaturation(1);
     selected.getPlayer().setHealth(20);
   }

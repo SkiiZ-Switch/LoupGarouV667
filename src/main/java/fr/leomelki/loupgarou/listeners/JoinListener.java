@@ -43,7 +43,7 @@ public class JoinListener implements Listener {
 				// team.sendPacket(p);
 				// myTeam.sendPacket(player);
 			}
-		p.setFoodLevel(6);
+		p.setFoodLevel(20);
 		if (e.getJoinMessage() == null || !e.getJoinMessage().equals("joinall"))
 			p.getPlayer().setResourcePack("https://files.catbox.moe/34dc55.zip");
 		else {

@@ -198,7 +198,7 @@ public class MainLg extends JavaPlugin {
 					public void onPacketSending(PacketEvent event) {
 						LGPlayer player = LGPlayer.thePlayer(event.getPlayer());
 						if (player.getGame() != null && player.getGame().isStarted()) {
-							player.getPlayer().setFoodLevel(6);
+							player.getPlayer().setFoodLevel(20);
 						}
 					}
 				});
