@@ -45,7 +45,7 @@ public class JoinListener implements Listener {
 			}
 		p.setFoodLevel(20);
 		if (e.getJoinMessage() == null || !e.getJoinMessage().equals("joinall"))
-			p.getPlayer().setResourcePack("https://files.catbox.moe/34dc55.zip");
+			p.getPlayer().setResourcePack("http://82.66.212.149:81/public/pack.zip");
 		else {
 			LGPlayer lgp = LGPlayer.thePlayer(e.getPlayer());
 			lgp.showView();
