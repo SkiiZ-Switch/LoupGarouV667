@@ -1,0 +1,10 @@
+{
+  "pack": {
+    "pack_format": 46,
+    "description": "Pack de texture pour le Loug-Garou, revision by SwitchFR",
+    "supported_formats": {
+      "min_inclusive": 30,
+      "max_inclusive": 999
+    }
+  }
+}

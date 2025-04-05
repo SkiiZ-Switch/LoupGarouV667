@@ -1,0 +1,203 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/eye_armor_trim_smithing_template",
+    "layer1": "minecraft:item/yellow_dye",
+    "layer2": "minecraft:item/yellow_candle",
+    "layer3": "minecraft:item/written_book"
+  },
+  "elements": [
+    {
+      "from": [
+        -2,
+        26,
+        23
+      ],
+      "to": [
+        -2,
+        32,
+        29
+      ],
+      "shade": false,
+      "faces": {
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#layer0"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#layer0"
+        }
+      }
+    },
+    {
+      "from": [
+        -2,
+        26,
+        23
+      ],
+      "to": [
+        -2,
+        32,
+        29
+      ],
+      "shade": false,
+      "faces": {
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#layer1"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#layer1"
+        }
+      }
+    },
+    {
+      "from": [
+        -2,
+        26,
+        23
+      ],
+      "to": [
+        -2,
+        32,
+        29
+      ],
+      "shade": false,
+      "faces": {
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#layer2"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#layer2"
+        }
+      }
+    },
+    {
+      "from": [
+        -2,
+        26,
+        23
+      ],
+      "to": [
+        -2,
+        32,
+        29
+      ],
+      "shade": false,
+      "faces": {
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#layer3"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#layer3"
+        }
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        0,
+        -90,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        -80
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        -80
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        26.437,
+        26.433,
+        -27.82
+      ],
+      "scale": [
+        1,
+        0.7,
+        0.7
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        -66.5,
+        -9.724,
+        -5.537
+      ],
+      "scale": [
+        1,
+        1.5,
+        1.5
+      ]
+    }
+  }
+}
