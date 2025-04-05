@@ -33,7 +33,7 @@
     "infecte_maire": "STONE_AXE",
     "infecte_maire_mort": "STONE_HOE",
     "infecte_mort": "STONE_SWORD",
-    "maire": "GOLDEN_PICKAXE",
+    "maire": "TRIDENT",
     "maire_mort": "GOLDEN_SHOVEL",
     "maire_vampire-infecte": "GOLDEN_AXE",
     "maire_mort_vampire-infecte": "GOLDEN_HOE",
@@ -266,7 +266,7 @@
     "vampire-infecte": "CHAIN"
   },
   "LoupGarouNoir": {
-    "": "END_ROD",
+    "": "OAK_DOOR",
     "infecte": "OAK_SIGN",
     "infecte_maire": "SPRUCE_SIGN",
     "infecte_maire_mort": "BIRCH_SIGN",
@@ -385,8 +385,8 @@
     "infecte_mort": "PURPLE_SHULKER_BOX",
     "maire": "MAGENTA_SHULKER_BOX",
     "maire_mort": "PINK_SHULKER_BOX",
-    "maire_vampire-infecte": "",
-    "maire_mort_vampire-infecte": "",
+    "maire_vampire-infecte": "HOPPER",
+    "maire_mort_vampire-infecte": "TRIPWIRE_HOOK",
     "mort": "GOLDEN_APPLE",
     "mort_vampire-infecte": "ENCHANTED_GOLDEN_APPLE",
     "vampire-infecte": "MELON_SLICE"
